@@ -1,6 +1,0 @@
-/admin.html
-  X-Robots-Tag: noindex, nofollow
-  X-Frame-Options: SAMEORIGIN
-
-/data/content.json
-  Cache-Control: public, max-age=0, must-revalidate
