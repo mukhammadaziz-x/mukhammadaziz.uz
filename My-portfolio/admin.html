@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Admin · Portfolio</title>
+  <meta name="referrer" content="no-referrer">
+  <title>Studio</title>
   <link rel="shortcut icon" href="/assets/images/logo.ico" type="image/x-icon">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,74 +14,129 @@
   <link rel="stylesheet" href="/assets/css/admin.css">
 </head>
 <body class="admin">
-  <header class="a-top">
-    <div class="a-brand"><span>⚡️</span> Admin</div>
-    <div id="status" class="a-status"><span class="dot"></span><span id="status-text">Loading…</span></div>
-    <div class="a-top-actions">
-      <a class="a-btn ghost" href="/" target="_blank" rel="noopener" title="Open live site">↗ Site</a>
-      <button class="a-btn ghost" data-act="toggle-preview" title="Show / hide preview">◧ Preview</button>
-      <button class="a-btn ghost" data-act="export" title="Download content.json">⤓ Export</button>
-      <label class="a-btn ghost" title="Load a content.json file">⤒ Import<input id="import-file" type="file" accept="application/json,.json" hidden></label>
-      <button class="a-btn ghost" data-act="settings" title="GitHub connection">⚙︎ GitHub</button>
-      <button class="a-btn primary" data-act="publish" title="Commit to GitHub (Ctrl+S)">Publish</button>
-    </div>
-  </header>
 
-  <div class="a-layout" id="layout">
-    <aside class="a-side">
-      <div class="a-side-title">Workspace</div>
-      <button class="a-side-item" data-act="open" data-target="site">⚙️ <span>Site settings</span></button>
-      <div class="a-side-title">Pages <button class="a-mini" data-act="page-add" title="New page">＋</button></div>
-      <div id="page-list"></div>
-      <div class="a-side-help">
-        <b>Text formatting</b><br>
-        <code>**bold**</code> <code>*italic*</code> <code>`code`</code><br>
-        <code>[text](https://…)</code> <code>==mark==</code><br>
-        <b>Icons</b>: emoji, <code>si:github</code> (<a href="https://simpleicons.org" target="_blank" rel="noopener">simpleicons</a>) or image path.<br>
-        <b>Page links</b>: <code>/blog</code>, sections: <code>/#projects</code>
+  <!-- ================= login / first-time setup ================= -->
+  <section id="gate" class="gate">
+    <div class="gate-glow"></div>
+    <form id="gate-form" class="gate-card" autocomplete="on">
+      <div class="gate-logo">⚡</div>
+      <h1 id="gate-title">Sign in</h1>
+      <p id="gate-sub" class="muted">Studio for your site.</p>
+
+      <label>Login<input name="username" autocomplete="username" required spellcheck="false"></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+
+      <div id="setup-fields" hidden>
+        <label>Repeat password<input name="password2" type="password" autocomplete="new-password"></label>
+        <label>GitHub token
+          <input name="token" type="password" autocomplete="off" placeholder="github_pat_…">
+        </label>
+        <p class="muted small">Create a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>
+          for <b>only this repository</b> with <b>Contents: Read and write</b>. It is encrypted with your password and saved to the repo
+          (<code>data/auth.json</code>) — after that you sign in with login + password only.</p>
+        <details class="gate-more">
+          <summary>Repository</summary>
+          <div class="a-grid2">
+            <label>Owner<input name="owner"></label>
+            <label>Repository<input name="repo"></label>
+            <label>Branch<input name="branch"></label>
+            <label>Site folder<input name="root" placeholder="(repo root)"></label>
+          </div>
+        </details>
       </div>
-    </aside>
 
-    <main class="a-main" id="editor"></main>
+      <button id="gate-btn" class="a-btn primary big" type="submit">Sign in</button>
+      <p id="gate-error" class="gate-error" role="alert"></p>
+      <p id="gate-foot" class="muted small gate-foot"></p>
+    </form>
+  </section>
 
-    <section class="a-preview" id="preview-pane">
-      <div class="a-preview-bar">
-        <span>Live preview</span>
-        <div>
-          <button class="a-mini" data-act="device" data-device="desktop" title="Desktop">🖥</button>
-          <button class="a-mini" data-act="device" data-device="mobile" title="Mobile">📱</button>
+  <!-- ================= studio ================= -->
+  <div id="app" hidden>
+    <header class="a-top">
+      <div class="a-brand"><span>⚡</span> Studio</div>
+      <div id="status" class="a-status"><span class="dot"></span><span id="status-text">Ready</span></div>
+      <div class="a-top-actions">
+        <a class="a-btn ghost" href="/" target="_blank" rel="noopener" title="Open live site">↗ Site</a>
+        <button class="a-btn ghost" data-act="toggle-preview" title="Show / hide preview">◧ Preview</button>
+        <button class="a-btn ghost" data-act="export" title="Download content.json">⤓ Export</button>
+        <label class="a-btn ghost" title="Load a content.json file">⤒ Import<input id="import-file" type="file" accept="application/json,.json" hidden></label>
+        <button class="a-btn ghost" data-act="account" title="Account &amp; security">👤 <span id="who"></span></button>
+        <button class="a-btn primary" data-act="publish" title="Commit to GitHub (Ctrl+S)">Publish</button>
+      </div>
+    </header>
+
+    <div class="a-layout" id="layout">
+      <aside class="a-side">
+        <button class="a-side-item" data-act="open" data-target="site">⚙️ <span>Site settings</span></button>
+        <div class="a-side-title">Pages <button class="a-mini" data-act="page-new" title="New page">＋</button></div>
+        <div id="page-list"></div>
+        <div class="a-side-help">
+          <b>Text</b>: <code>**bold**</code> <code>*italic*</code> <code>`code`</code> <code>[text](url)</code> <code>==mark==</code>,
+          lines starting with <code>- </code> or <code>1. </code> become lists.<br>
+          <b>Icons</b>: emoji, <code>si:github</code> (<a href="https://simpleicons.org" target="_blank" rel="noopener">simpleicons</a>) or an image.<br>
+          <b>Links</b>: <code>/python</code>, <code>/python/decorators</code>, <code>/#section</code>.<br>
+          <b>Draft</b> pages are not published; links to them are hidden.
         </div>
-      </div>
-      <div class="a-frame-wrap"><iframe id="preview" src="/?preview=1" title="Preview"></iframe></div>
-    </section>
+      </aside>
+
+      <main class="a-main" id="editor"></main>
+
+      <section class="a-preview" id="preview-pane">
+        <div class="a-preview-bar">
+          <span>Live preview</span>
+          <div>
+            <button class="a-mini" data-act="device" data-device="desktop" title="Desktop">🖥</button>
+            <button class="a-mini" data-act="device" data-device="mobile" title="Mobile">📱</button>
+          </div>
+        </div>
+        <div class="a-frame-wrap"><iframe id="preview" src="/?preview=1" title="Preview"></iframe></div>
+      </section>
+    </div>
   </div>
 
-  <div class="a-modal" id="settings-modal" hidden>
-    <div class="a-modal-card">
-      <h2>Connect GitHub</h2>
-      <p class="muted">Publishing commits <code>data/content.json</code> to your repo; Netlify redeploys the site automatically.
-        Create a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>
-        with access to <b>only this repository</b> and permission <b>Contents: Read and write</b>.</p>
-      <form id="settings-form">
-        <div class="a-grid2">
-          <label>Owner<input name="owner" required></label>
-          <label>Repository<input name="repo" required></label>
-          <label>Branch<input name="branch" required></label>
-          <label>Site folder in repo<input name="root" placeholder="(empty = repo root)"></label>
-        </div>
-        <label>Token<input name="token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
-        <p class="muted small">The token is stored only in this browser (localStorage). Don't use this admin on shared computers.</p>
-        <div class="a-modal-actions">
-          <button type="button" class="a-btn ghost" data-act="gh-pull">Load latest from GitHub</button>
-          <span style="flex:1"></span>
-          <button type="button" class="a-btn ghost" data-act="close-modal">Cancel</button>
-          <button type="submit" class="a-btn primary">Save</button>
-        </div>
-      </form>
-    </div>
+  <!-- new page -->
+  <div class="a-modal" id="page-modal" hidden>
+    <form class="a-modal-card" id="page-form">
+      <h2>New page</h2>
+      <label class="a-field"><span>Title</span><input name="title" required placeholder="e.g. Python"></label>
+      <label class="a-field"><span>Inside</span><select name="parent"></select></label>
+      <label class="a-field"><span>URL</span><div class="a-slug"><span id="new-prefix">/</span><input name="slug" required spellcheck="false"></div></label>
+      <label class="a-check"><input type="checkbox" name="draft" checked> Draft (not published until you untick it)</label>
+      <label class="a-check"><input type="checkbox" name="fullWidth"> Full width (good for tables)</label>
+      <div class="a-modal-actions">
+        <span style="flex:1"></span>
+        <button type="button" class="a-btn ghost" data-act="close-modal">Cancel</button>
+        <button type="submit" class="a-btn primary">Create</button>
+      </div>
+    </form>
   </div>
 
-  <div class="a-menu" id="block-menu" hidden></div>
+  <!-- account -->
+  <div class="a-modal" id="account-modal" hidden>
+    <form class="a-modal-card" id="account-form" autocomplete="off">
+      <h2>Account &amp; security</h2>
+      <p class="muted">Change your login, password or GitHub token. Everything is re-encrypted and committed as <code>data/auth.json</code>.</p>
+      <label class="a-field"><span>Login</span><input name="username" required spellcheck="false" autocomplete="username"></label>
+      <div class="a-grid2">
+        <label class="a-field"><span>New password</span><input name="password" type="password" autocomplete="new-password" placeholder="leave empty to keep"></label>
+        <label class="a-field"><span>Repeat</span><input name="password2" type="password" autocomplete="new-password"></label>
+      </div>
+      <label class="a-field"><span>GitHub token</span><input name="token" type="password" placeholder="leave empty to keep"></label>
+      <div class="a-modal-actions">
+        <button type="button" class="a-btn ghost danger" data-act="logout">Log out</button>
+        <span style="flex:1"></span>
+        <button type="button" class="a-btn ghost" data-act="close-modal">Cancel</button>
+        <button type="submit" class="a-btn primary">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="a-menu" id="block-menu" hidden>
+    <input id="menu-filter" placeholder="Filter blocks…" autocomplete="off">
+    <div id="menu-list"></div>
+  </div>
+  <datalist id="page-urls"></datalist>
   <div class="a-toasts" id="toasts"></div>
 
   <script src="/assets/js/render.js"></script>
