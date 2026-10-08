@@ -1,0 +1,560 @@
+{
+  "site": {
+    "title": "Muhammadaziz — Backend Developer",
+    "description": "Muhammadaziz Xabibullayev — Backend Developer from Andijan, Uzbekistan. Node.js, NestJS, PostgreSQL, Docker.",
+    "url": "https://mukhammadaziz.uz",
+    "image": "assets/images/me.jpg",
+    "brandIcon": "⚡️",
+    "brandText": "@mukhammadaziz",
+    "defaultTheme": "dark",
+    "nav": [
+      {
+        "label": "Resume",
+        "url": "/resume",
+        "highlight": false
+      },
+      {
+        "label": "Projects",
+        "url": "/projects",
+        "highlight": false
+      },
+      {
+        "label": "Blog",
+        "url": "/blog",
+        "highlight": false
+      },
+      {
+        "label": "Contact",
+        "url": "/contact",
+        "highlight": true
+      }
+    ],
+    "footer": "© {year} Muhammadaziz Xabibullayev · Built with ☕ in Andijan"
+  },
+  "pages": [
+    {
+      "slug": "",
+      "title": "Muhammadaziz",
+      "icon": "assets/images/me.jpg",
+      "cover": "",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Hi! I'm **Muhammadaziz Xabibullayev**, a **Backend Developer** from Andijan, 🇺🇿 Uzbekistan. I enjoy turning complex problems into simple, clear and scalable solutions.\n\nMy job is to build reliable backend systems — stable architecture, clean APIs and solid database design — so your product is **fast, secure and efficient**."
+        },
+        {
+          "type": "callout",
+          "icon": "🎓",
+          "color": "blue",
+          "text": "Currently studying at **PDP University** (2024 — 2028) and open to freelance & full-time backend roles."
+        },
+        {
+          "type": "h2",
+          "text": "Find me on"
+        },
+        {
+          "type": "links",
+          "items": [
+            {
+              "icon": "si:telegram",
+              "label": "Telegram",
+              "desc": "@muhammadaziz_xabibullayev",
+              "url": "https://t.me/muhammadaziz_xabibullayev"
+            },
+            {
+              "icon": "si:github",
+              "label": "GitHub",
+              "desc": "mukhammadaziz-x",
+              "url": "https://github.com/mukhammadaziz-x"
+            },
+            {
+              "icon": "si:instagram",
+              "label": "Instagram",
+              "desc": "@muhammadaziz.insight",
+              "url": "https://instagram.com/muhammadaziz.insight"
+            },
+            {
+              "icon": "si:facebook",
+              "label": "Facebook",
+              "desc": "MuhammadAziz Xabibullayev",
+              "url": "https://www.facebook.com/p/MuhammadAziz-Xabibullayev-100075441524800/"
+            }
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Explore"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "📄",
+              "title": "Resume",
+              "desc": "Experience, education and skills.",
+              "url": "/resume"
+            },
+            {
+              "icon": "💼",
+              "title": "Projects",
+              "desc": "Things I've built and certifications.",
+              "url": "/projects"
+            },
+            {
+              "icon": "📝",
+              "title": "Blog",
+              "desc": "Notes on backend, databases and DevOps.",
+              "url": "/blog"
+            },
+            {
+              "icon": "📬",
+              "title": "Contact",
+              "desc": "Let's talk about your project.",
+              "url": "/contact"
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "What I do"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "⚙️",
+              "title": "Backend Development",
+              "desc": "Secure, scalable and efficient backend systems using modern technologies and best practices.",
+              "url": ""
+            },
+            {
+              "icon": "🔌",
+              "title": "API Development & Integration",
+              "desc": "Clean, well-documented REST and GraphQL APIs, plus seamless third-party integrations.",
+              "url": ""
+            },
+            {
+              "icon": "🗄️",
+              "title": "Database Design & Optimization",
+              "desc": "Structured, optimized PostgreSQL / MySQL databases built for performance and reliability.",
+              "url": ""
+            },
+            {
+              "icon": "🚀",
+              "title": "DevOps & Deployment",
+              "desc": "Docker, Linux and CI/CD pipelines — deployed and maintained for smooth, stable performance.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Tech stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Node.js",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "NestJS",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Express",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "TypeORM",
+              "color": "orange",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "MySQL",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "REST",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "GraphQL",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Linux",
+              "color": "brown",
+              "url": ""
+            },
+            {
+              "label": "CI/CD",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Testimonials"
+        },
+        {
+          "type": "toggle",
+          "title": "Siddiq Karimov",
+          "open": true,
+          "text": "Muhammadaziz built our corporate website from scratch. He handled the entire backend (Node.js + Express), PostgreSQL database, and admin panel single-handedly. Excellent code quality, fast delivery, and great communication. Highly recommended!"
+        },
+        {
+          "type": "toggle",
+          "title": "Jamshidbek Mirzakarimov",
+          "text": "Worked with Muhammadaziz on a project — his APIs were extremely clean and well-documented. Zero issues integrating on the frontend. He also set up Docker and CI/CD pipelines himself. Real professional!"
+        },
+        {
+          "type": "toggle",
+          "title": "Gulshoda Palonchiyeva",
+          "text": "Hired Muhammadaziz for a freelance project — he delivered high-quality work ahead of deadline. Always responsive and proactive. Definitely looking forward to working together again!"
+        },
+        {
+          "type": "toggle",
+          "title": "Muhammadali Botirov",
+          "text": "Despite his young age, Muhammadaziz has deep knowledge in backend development. Node.js, NestJS, TypeORM, PostgreSQL — he masters them all. His code follows clean architecture and best practices perfectly. Impressive!"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "button",
+          "icon": "📬",
+          "label": "Let's work together",
+          "url": "/contact"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "slug": "resume",
+      "title": "Resume",
+      "icon": "📄",
+      "cover": "",
+      "description": "Muhammadaziz Xabibullayev — experience, education and skills of a backend developer.",
+      "blocks": [
+        {
+          "type": "h1",
+          "text": "Experience"
+        },
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "date": "May — Jul 2025",
+              "title": "Full Stack Developer",
+              "subtitle": "Dern Support",
+              "text": "Developed a full company website from scratch, handling both frontend and backend with optimized performance."
+            },
+            {
+              "date": "Apr — Jun 2025",
+              "title": "Frontend Developer",
+              "subtitle": "Felix Zoo",
+              "text": "Improved UI/UX and made the entire platform fully responsive, optimizing performance and usability."
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Education"
+        },
+        {
+          "type": "timeline",
+          "items": [
+            {
+              "date": "2024 — 2028",
+              "title": "PDP University",
+              "subtitle": "Bachelor's degree",
+              "text": "One of the leading modern universities in digital technologies."
+            },
+            {
+              "date": "2013 — 2024",
+              "title": "Secondary School",
+              "subtitle": "Diploma",
+              "text": "General secondary education with a strong foundation in STEM and languages."
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Skills"
+        },
+        {
+          "type": "progress",
+          "items": [
+            {
+              "label": "Backend Development",
+              "value": 90
+            },
+            {
+              "label": "API Development",
+              "value": 85
+            },
+            {
+              "label": "Database Management",
+              "value": 80
+            },
+            {
+              "label": "Server & Deployment",
+              "value": 70
+            }
+          ]
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Node.js",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "NestJS",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Express",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "TypeORM",
+              "color": "orange",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "MySQL",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "REST",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "GraphQL",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Linux",
+              "color": "brown",
+              "url": ""
+            },
+            {
+              "label": "CI/CD",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "title": "Projects",
+      "icon": "💼",
+      "cover": "",
+      "description": "Projects and certifications by Muhammadaziz Xabibullayev.",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "A selection of things I've built. Click a card to open the live project."
+        },
+        {
+          "type": "gallery",
+          "columns": "2",
+          "items": [
+            {
+              "image": "assets/images/project-1.png",
+              "title": "Felix Zoo",
+              "desc": "Improved UI/UX and made the whole platform fully responsive.",
+              "tags": "Web development, Frontend",
+              "url": "https://feliks.uz/"
+            },
+            {
+              "image": "assets/images/project-21.png",
+              "title": "Dern Support",
+              "desc": "Full company website built from scratch — frontend and backend.",
+              "tags": "Backend, Full stack",
+              "url": "https://dern-support-rqz7.onrender.com/"
+            },
+            {
+              "image": "assets/images/project-9.png",
+              "title": "Arrival",
+              "desc": "Web development project.",
+              "tags": "Web development",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Certifications"
+        },
+        {
+          "type": "gallery",
+          "columns": "3",
+          "items": [
+            {
+              "image": "assets/images/certifications/promt-engineering.png",
+              "title": "Prompt Engineering",
+              "desc": "Osnova — 2025",
+              "tags": "",
+              "url": "assets/images/certifications/GPT_ основы промпт-инженерии.pdf"
+            },
+            {
+              "image": "assets/images/certifications/critical thinking.png",
+              "title": "Critical Thinking",
+              "desc": "Osnova — 2025",
+              "tags": "",
+              "url": "assets/images/certifications/Tanqidiy fikrlash.pdf"
+            },
+            {
+              "image": "assets/images/certifications/notiqlik.png",
+              "title": "Public Speaking",
+              "desc": "Najot Nur — 2024–2025",
+              "tags": "",
+              "url": "assets/images/certifications/Notiqlik san'ati.pdf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "blog",
+      "title": "Blog",
+      "icon": "📝",
+      "cover": "",
+      "description": "Notes on backend development, databases and DevOps.",
+      "blocks": [
+        {
+          "type": "callout",
+          "icon": "🚧",
+          "color": "yellow",
+          "text": "Posts are coming soon."
+        },
+        {
+          "type": "h2",
+          "text": "Articles"
+        },
+        {
+          "type": "inline",
+          "items": [
+            {
+              "icon": "🐘",
+              "label": "PostgreSQL tips (draft)",
+              "url": ""
+            },
+            {
+              "icon": "🐳",
+              "label": "Docker for Node.js (draft)",
+              "url": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "contact",
+      "title": "Contact",
+      "icon": "📬",
+      "cover": "",
+      "description": "Get in touch with Muhammadaziz Xabibullayev — backend developer from Andijan, Uzbekistan.",
+      "blocks": [
+        {
+          "type": "text",
+          "text": "Have a project in mind or want to work together? The fastest way to reach me is **Telegram**, or send a message below."
+        },
+        {
+          "type": "links",
+          "items": [
+            {
+              "icon": "si:telegram",
+              "label": "Telegram",
+              "desc": "@muhammadaziz_xabibullayev",
+              "url": "https://t.me/muhammadaziz_xabibullayev"
+            },
+            {
+              "icon": "si:gmail",
+              "label": "Email",
+              "desc": "muhammadazizxabibullayev@gmail.com",
+              "url": "mailto:muhammadazizxabibullayev@gmail.com"
+            },
+            {
+              "icon": "📞",
+              "label": "Phone",
+              "desc": "+998 88 082 94 44",
+              "url": "tel:+998880829444"
+            }
+          ]
+        },
+        {
+          "type": "inline",
+          "items": [
+            {
+              "icon": "📍",
+              "label": "Andijan, Uzbekistan",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h2",
+          "text": "Send a message"
+        },
+        {
+          "type": "form",
+          "button": "Send message",
+          "success": "Thanks! Your message has been sent — I'll get back to you soon."
+        }
+      ]
+    }
+  ]
+}

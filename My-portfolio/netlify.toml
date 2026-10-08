@@ -1,0 +1,8 @@
+# Netlify reads this file when the site's base directory is set to "My-portfolio".
+# Builds a pre-rendered HTML file for every page (see scripts/build.js).
+[build]
+  command = "node scripts/build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

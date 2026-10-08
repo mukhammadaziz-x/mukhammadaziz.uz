@@ -1,0 +1,8 @@
+# Netlify reads this file when the site's base directory is the repo root.
+[build]
+  base = "My-portfolio"
+  command = "node scripts/build.js"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · Portfolio</title>
+  <link rel="shortcut icon" href="/assets/images/logo.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/notion.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="admin">
+  <header class="a-top">
+    <div class="a-brand"><span>⚡️</span> Admin</div>
+    <div id="status" class="a-status"><span class="dot"></span><span id="status-text">Loading…</span></div>
+    <div class="a-top-actions">
+      <a class="a-btn ghost" href="/" target="_blank" rel="noopener" title="Open live site">↗ Site</a>
+      <button class="a-btn ghost" data-act="toggle-preview" title="Show / hide preview">◧ Preview</button>
+      <button class="a-btn ghost" data-act="export" title="Download content.json">⤓ Export</button>
+      <label class="a-btn ghost" title="Load a content.json file">⤒ Import<input id="import-file" type="file" accept="application/json,.json" hidden></label>
+      <button class="a-btn ghost" data-act="settings" title="GitHub connection">⚙︎ GitHub</button>
+      <button class="a-btn primary" data-act="publish" title="Commit to GitHub (Ctrl+S)">Publish</button>
+    </div>
+  </header>
+
+  <div class="a-layout" id="layout">
+    <aside class="a-side">
+      <div class="a-side-title">Workspace</div>
+      <button class="a-side-item" data-act="open" data-target="site">⚙️ <span>Site settings</span></button>
+      <div class="a-side-title">Pages <button class="a-mini" data-act="page-add" title="New page">＋</button></div>
+      <div id="page-list"></div>
+      <div class="a-side-help">
+        <b>Text formatting</b><br>
+        <code>**bold**</code> <code>*italic*</code> <code>`code`</code><br>
+        <code>[text](https://…)</code> <code>==mark==</code><br>
+        <b>Icons</b>: emoji, <code>si:github</code> (<a href="https://simpleicons.org" target="_blank" rel="noopener">simpleicons</a>) or image path.<br>
+        <b>Page links</b>: <code>/blog</code>, sections: <code>/#projects</code>
+      </div>
+    </aside>
+
+    <main class="a-main" id="editor"></main>
+
+    <section class="a-preview" id="preview-pane">
+      <div class="a-preview-bar">
+        <span>Live preview</span>
+        <div>
+          <button class="a-mini" data-act="device" data-device="desktop" title="Desktop">🖥</button>
+          <button class="a-mini" data-act="device" data-device="mobile" title="Mobile">📱</button>
+        </div>
+      </div>
+      <div class="a-frame-wrap"><iframe id="preview" src="/?preview=1" title="Preview"></iframe></div>
+    </section>
+  </div>
+
+  <div class="a-modal" id="settings-modal" hidden>
+    <div class="a-modal-card">
+      <h2>Connect GitHub</h2>
+      <p class="muted">Publishing commits <code>data/content.json</code> to your repo; Netlify redeploys the site automatically.
+        Create a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>
+        with access to <b>only this repository</b> and permission <b>Contents: Read and write</b>.</p>
+      <form id="settings-form">
+        <div class="a-grid2">
+          <label>Owner<input name="owner" required></label>
+          <label>Repository<input name="repo" required></label>
+          <label>Branch<input name="branch" required></label>
+          <label>Site folder in repo<input name="root" placeholder="(empty = repo root)"></label>
+        </div>
+        <label>Token<input name="token" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+        <p class="muted small">The token is stored only in this browser (localStorage). Don't use this admin on shared computers.</p>
+        <div class="a-modal-actions">
+          <button type="button" class="a-btn ghost" data-act="gh-pull">Load latest from GitHub</button>
+          <span style="flex:1"></span>
+          <button type="button" class="a-btn ghost" data-act="close-modal">Cancel</button>
+          <button type="submit" class="a-btn primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="a-menu" id="block-menu" hidden></div>
+  <div class="a-toasts" id="toasts"></div>
+
+  <script src="/assets/js/render.js"></script>
+  <script src="/assets/js/admin.js"></script>
+</body>
+</html>
