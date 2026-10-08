@@ -1,11 +1,11 @@
 {
   "site": {
-    "title": "Muhammadaziz — Backend Developer",
-    "description": "Muhammadaziz Xabibullayev — Backend Developer from Andijan, Uzbekistan. Node.js, NestJS, PostgreSQL, Docker.",
+    "title": "Muhammadaziz — Software Engineer",
+    "description": "Muhammadaziz Xabibullayev — Software Engineer from Tashkent, Uzbekistan.",
     "url": "https://mukhammadaziz.uz",
     "image": "assets/images/me.jpg",
     "brandIcon": "⚡️",
-    "brandText": "@mukhammadaziz",
+    "brandText": "@muhammadaziz",
     "defaultTheme": "dark",
     "nav": [
       {
@@ -29,7 +29,7 @@
         "highlight": true
       }
     ],
-    "footer": "© {year} Muhammadaziz Xabibullayev · Built with ☕ in Andijan"
+    "footer": "© {year} Muhammadaziz Xabibullayev · Built with ☕ in Tashkent"
   },
   "pages": [
     {
