@@ -4,324 +4,267 @@
     "description": "Muhammadaziz Xabibullayev — Backend Developer from Andijan, Uzbekistan. Node.js, NestJS, PostgreSQL, Docker.",
     "url": "https://mukhammadaziz.uz",
     "image": "assets/images/me.jpg",
-    "brandIcon": "⚡",
-    "brandText": "@mukhammadaziz Notes",
+    "brandIcon": "⚡️",
+    "brandText": "@mukhammadaziz",
     "defaultTheme": "dark",
     "nav": [
       {
-        "label": "Hire me",
-        "url": "/contact",
-        "icon": "🗓️",
+        "label": "Resume",
+        "url": "/resume",
         "highlight": false
+      },
+      {
+        "label": "Projects",
+        "url": "/projects",
+        "highlight": false
+      },
+      {
+        "label": "Blog",
+        "url": "/blog",
+        "highlight": false
+      },
+      {
+        "label": "Contact",
+        "url": "/contact",
+        "highlight": true
       }
     ],
-    "footer": ""
+    "footer": "© {year} Muhammadaziz Xabibullayev · Built with ☕ in Andijan"
   },
   "pages": [
     {
       "slug": "",
-      "title": "@mukhammadaziz",
-      "icon": "⚡",
-      "fullWidth": true,
-      "cover": "assets/images/about_me.jpg, assets/images/project-1.png, assets/images/me.jpg, assets/images/project-21.png, assets/images/project-9.png",
-      "description": "",
+      "title": "Muhammadaziz",
+      "icon": "assets/images/me.jpg",
+      "cover": "",
       "blocks": [
         {
+          "type": "text",
+          "text": "Hi! I'm **Muhammadaziz Khabibullaev**, a **Software Engineer** from Tashkent, 🇺🇿 Uzbekistan. I enjoy turning complex problems into simple, clear and scalable solutions.\n\nMy job is to build reliable backend systems — stable architecture, clean APIs and solid database design — so your product is **fast, secure and efficient**."
+        },
+        {
           "type": "callout",
-          "icon": "",
-          "color": "default",
-          "text": "My name is **Muhammadaziz Xabibullayev**, a Backend Developer from 🇺🇿 Andijan, Uzbekistan, currently studying at **PDP University**.\nHere you find my projects, resume and engineering notes: I write about **Node.js, NestJS, databases and DevOps** — building backends that are fast, secure and easy to maintain.",
-          "children": [
+          "icon": "🎓",
+          "color": "blue",
+          "text": "Currently studying at **PDP University** (2024 — 2028) and open to freelance & full-time backend roles."
+        },
+        {
+          "type": "h2",
+          "text": "Find me on"
+        },
+        {
+          "type": "links",
+          "items": [
             {
-              "type": "columns",
-              "columns": [
-                {
-                  "blocks": [
-                    {
-                      "type": "h2",
-                      "text": "Work with me",
-                      "underline": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "Need a backend for your product? I build APIs, databases and deployments and I'm open to **freelance & full-time** roles. Write me on [the contact page](/contact)."
-                    }
-                  ]
-                },
-                {
-                  "blocks": [
-                    {
-                      "type": "h2",
-                      "text": "Find me on",
-                      "underline": true
-                    },
-                    {
-                      "type": "linklist",
-                      "items": [
-                        {
-                          "icon": "si:telegram",
-                          "prefix": "Telegram",
-                          "label": "@muhammadaziz_xabibullayev",
-                          "url": "https://t.me/muhammadaziz_xabibullayev"
-                        },
-                        {
-                          "icon": "si:github",
-                          "prefix": "GitHub",
-                          "label": "mukhammadaziz-x",
-                          "url": "https://github.com/mukhammadaziz-x"
-                        },
-                        {
-                          "icon": "si:instagram",
-                          "prefix": "Instagram",
-                          "label": "@muhammadaziz.insight",
-                          "url": "https://instagram.com/muhammadaziz.insight"
-                        },
-                        {
-                          "icon": "si:facebook",
-                          "prefix": "Facebook",
-                          "label": "MuhammadAziz",
-                          "url": "https://www.facebook.com/p/MuhammadAziz-Xabibullayev-100075441524800/"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "blocks": [
-                    {
-                      "type": "h2",
-                      "text": "Live projects",
-                      "underline": true
-                    },
-                    {
-                      "type": "linklist",
-                      "items": [
-                        {
-                          "icon": "🦁",
-                          "prefix": "Felix Zoo",
-                          "label": "feliks.uz",
-                          "url": "https://feliks.uz/"
-                        },
-                        {
-                          "icon": "🛠️",
-                          "prefix": "Dern Support",
-                          "label": "website",
-                          "url": "https://dern-support-rqz7.onrender.com/"
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "blocks": [
-                    {
-                      "type": "h2",
-                      "text": "Contacts",
-                      "underline": true
-                    },
-                    {
-                      "type": "linklist",
-                      "items": [
-                        {
-                          "icon": "✉️",
-                          "prefix": "",
-                          "label": "muhammadazizxabibullayev@gmail.com",
-                          "url": "mailto:muhammadazizxabibullayev@gmail.com"
-                        },
-                        {
-                          "icon": "📞",
-                          "prefix": "",
-                          "label": "+998 88 082 94 44",
-                          "url": "tel:+998880829444"
-                        },
-                        {
-                          "icon": "📍",
-                          "prefix": "",
-                          "label": "Andijan, Uzbekistan",
-                          "url": ""
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              "icon": "si:telegram",
+              "label": "Telegram",
+              "desc": "@muhammadaziz_xabibullayev",
+              "url": "https://t.me/muhammadaziz_xabibullayev"
+            },
+            {
+              "icon": "si:github",
+              "label": "GitHub",
+              "desc": "mukhammadaziz-x",
+              "url": "https://github.com/mukhammadaziz-x"
+            },
+            {
+              "icon": "si:instagram",
+              "label": "Instagram",
+              "desc": "@muhammadaziz.insight",
+              "url": "https://instagram.com/muhammadaziz.insight"
+            },
+            {
+              "icon": "si:facebook",
+              "label": "Facebook",
+              "desc": "MuhammadAziz Xabibullayev",
+              "url": "https://www.facebook.com/p/MuhammadAziz-Xabibullayev-100075441524800/"
             }
           ]
         },
         {
-          "type": "columns",
-          "columns": [
+          "type": "h2",
+          "text": "Explore"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
             {
-              "blocks": [
-                {
-                  "type": "h1",
-                  "text": "Development",
-                  "underline": true
-                },
-                {
-                  "type": "text",
-                  "text": "📚 Notes on Node.js, NestJS, databases and DevOps are being written.",
-                  "color": "gray"
-                },
-                {
-                  "type": "linklist",
-                  "items": [
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/nodejs"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/nestjs"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/databases"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/devops"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/system-design"
-                    }
-                  ]
-                }
-              ]
+              "icon": "📄",
+              "title": "Resume",
+              "desc": "Experience, education and skills.",
+              "url": "/resume"
             },
             {
-              "blocks": [
-                {
-                  "type": "h1",
-                  "text": "Projects",
-                  "underline": true
-                },
-                {
-                  "type": "linklist",
-                  "items": [
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/projects/felix-zoo"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/projects/dern-support"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/projects/arrival"
-                    },
-                    {
-                      "icon": "🗂️",
-                      "prefix": "",
-                      "label": "All projects",
-                      "url": "/projects"
-                    }
-                  ]
-                }
-              ]
+              "icon": "💼",
+              "title": "Projects",
+              "desc": "Things I've built and certifications.",
+              "url": "/projects"
             },
             {
-              "blocks": [
-                {
-                  "type": "h1",
-                  "text": "Resume",
-                  "underline": true
-                },
-                {
-                  "type": "linklist",
-                  "items": [
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/resume"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/certifications"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/testimonials"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/contact"
-                    }
-                  ]
-                }
-              ]
+              "icon": "📝",
+              "title": "Blog",
+              "desc": "Notes on backend, databases and DevOps.",
+              "url": "/blog"
             },
             {
-              "blocks": [
-                {
-                  "type": "h1",
-                  "text": "Articles",
-                  "underline": true
-                },
-                {
-                  "type": "text",
-                  "text": "✍️ First articles are on the way.",
-                  "color": "gray"
-                },
-                {
-                  "type": "linklist",
-                  "items": [
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/blog"
-                    },
-                    {
-                      "icon": "",
-                      "prefix": "",
-                      "label": "",
-                      "url": "/nodejs/event-loop"
-                    }
-                  ]
-                }
-              ]
+              "icon": "📬",
+              "title": "Contact",
+              "desc": "Let's talk about your project.",
+              "url": "/contact"
             }
           ]
+        },
+        {
+          "type": "h1",
+          "text": "What I do"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "⚙️",
+              "title": "Backend Development",
+              "desc": "Secure, scalable and efficient backend systems using modern technologies and best practices.",
+              "url": ""
+            },
+            {
+              "icon": "🔌",
+              "title": "API Development & Integration",
+              "desc": "Clean, well-documented REST and GraphQL APIs, plus seamless third-party integrations.",
+              "url": ""
+            },
+            {
+              "icon": "🗄️",
+              "title": "Database Design & Optimization",
+              "desc": "Structured, optimized PostgreSQL / MySQL databases built for performance and reliability.",
+              "url": ""
+            },
+            {
+              "icon": "🚀",
+              "title": "DevOps & Deployment",
+              "desc": "Docker, Linux and CI/CD pipelines — deployed and maintained for smooth, stable performance.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Tech stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Node.js",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "NestJS",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Express",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "TypeORM",
+              "color": "orange",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "MySQL",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "REST",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "GraphQL",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Linux",
+              "color": "brown",
+              "url": ""
+            },
+            {
+              "label": "CI/CD",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Testimonials"
+        },
+        {
+          "type": "toggle",
+          "title": "Siddiq Karimov",
+          "open": true,
+          "text": "Muhammadaziz built our corporate website from scratch. He handled the entire backend (Node.js + Express), PostgreSQL database, and admin panel single-handedly. Excellent code quality, fast delivery, and great communication. Highly recommended!"
+        },
+        {
+          "type": "toggle",
+          "title": "Jamshidbek Mirzakarimov",
+          "text": "Worked with Muhammadaziz on a project — his APIs were extremely clean and well-documented. Zero issues integrating on the frontend. He also set up Docker and CI/CD pipelines himself. Real professional!"
+        },
+        {
+          "type": "toggle",
+          "title": "Gulshoda Palonchiyeva",
+          "text": "Hired Muhammadaziz for a freelance project — he delivered high-quality work ahead of deadline. Always responsive and proactive. Definitely looking forward to working together again!"
+        },
+        {
+          "type": "toggle",
+          "title": "Muhammadali Botirov",
+          "text": "Despite his young age, Muhammadaziz has deep knowledge in backend development. Node.js, NestJS, TypeORM, PostgreSQL — he masters them all. His code follows clean architecture and best practices perfectly. Impressive!"
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "button",
+          "icon": "📬",
+          "label": "Let's work together",
+          "url": "/contact"
         }
-      ]
+      ],
+      "description": ""
     },
     {
       "slug": "resume",
       "title": "Resume",
-      "icon": "💼",
+      "icon": "📄",
       "cover": "",
       "description": "Muhammadaziz Xabibullayev — experience, education and skills of a backend developer.",
       "blocks": [
         {
           "type": "h1",
-          "text": "Experience",
-          "underline": true
+          "text": "Experience"
         },
         {
           "type": "timeline",
@@ -342,8 +285,7 @@
         },
         {
           "type": "h1",
-          "text": "Education",
-          "underline": true
+          "text": "Education"
         },
         {
           "type": "timeline",
@@ -364,8 +306,7 @@
         },
         {
           "type": "h1",
-          "text": "Skills",
-          "underline": true
+          "text": "Skills"
         },
         {
           "type": "progress",
@@ -456,15 +397,46 @@
       ]
     },
     {
-      "slug": "certifications",
-      "title": "Certifications",
-      "icon": "📜",
+      "slug": "projects",
+      "title": "Projects",
+      "icon": "💼",
       "cover": "",
-      "description": "Certificates of Muhammadaziz Xabibullayev.",
+      "description": "Projects and certifications by Muhammadaziz Xabibullayev.",
       "blocks": [
         {
           "type": "text",
-          "text": "Courses and certificates I've completed. Click a card to open the PDF."
+          "text": "A selection of things I've built. Click a card to open the live project."
+        },
+        {
+          "type": "gallery",
+          "columns": "2",
+          "items": [
+            {
+              "image": "assets/images/project-1.png",
+              "title": "Felix Zoo",
+              "desc": "Improved UI/UX and made the whole platform fully responsive.",
+              "tags": "Web development, Frontend",
+              "url": "https://feliks.uz/"
+            },
+            {
+              "image": "assets/images/project-21.png",
+              "title": "Dern Support",
+              "desc": "Full company website built from scratch — frontend and backend.",
+              "tags": "Backend, Full stack",
+              "url": "https://dern-support-rqz7.onrender.com/"
+            },
+            {
+              "image": "assets/images/project-9.png",
+              "title": "Arrival",
+              "desc": "Web development project.",
+              "tags": "Web development",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Certifications"
         },
         {
           "type": "gallery",
@@ -496,187 +468,36 @@
       ]
     },
     {
-      "slug": "testimonials",
-      "title": "Testimonials",
-      "icon": "💬",
+      "slug": "blog",
+      "title": "Blog",
+      "icon": "📝",
       "cover": "",
-      "description": "What people say about working with Muhammadaziz.",
+      "description": "Notes on backend development, databases and DevOps.",
       "blocks": [
         {
-          "type": "quote",
-          "text": "Muhammadaziz built our corporate website from scratch. He handled the entire backend (Node.js + Express), PostgreSQL database, and admin panel single-handedly. Excellent code quality, fast delivery, and great communication. Highly recommended!",
-          "author": "Siddiq Karimov"
-        },
-        {
-          "type": "quote",
-          "text": "Worked with Muhammadaziz on a project — his APIs were extremely clean and well-documented. Zero issues integrating on the frontend. He also set up Docker and CI/CD pipelines himself. Real professional!",
-          "author": "Jamshidbek Mirzakarimov"
-        },
-        {
-          "type": "quote",
-          "text": "Hired Muhammadaziz for a freelance project — he delivered high-quality work ahead of deadline. Always responsive and proactive. Definitely looking forward to working together again!",
-          "author": "Gulshoda Palonchiyeva"
-        },
-        {
-          "type": "quote",
-          "text": "Despite his young age, Muhammadaziz has deep knowledge in backend development. Node.js, NestJS, TypeORM, PostgreSQL — he masters them all. His code follows clean architecture and best practices perfectly. Impressive!",
-          "author": "Muhammadali Botirov"
-        }
-      ]
-    },
-    {
-      "slug": "projects",
-      "title": "Projects",
-      "icon": "🗂️",
-      "cover": "",
-      "description": "Projects built by Muhammadaziz Xabibullayev.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Things I've built. Open a project for details, or visit the live site."
-        },
-        {
-          "type": "database",
-          "title": "All projects",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "🦁",
-              "name": "Felix Zoo",
-              "url": "/projects/felix-zoo",
-              "tags": "Frontend, Responsive",
-              "note": "UI/UX improvements, mobile layout"
-            },
-            {
-              "icon": "🛠️",
-              "name": "Dern Support",
-              "url": "/projects/dern-support",
-              "tags": "Full stack, Backend",
-              "note": "Company website from scratch"
-            },
-            {
-              "icon": "🚀",
-              "name": "Arrival",
-              "url": "/projects/arrival",
-              "tags": "Web development",
-              "note": ""
-            }
-          ]
+          "type": "callout",
+          "icon": "🚧",
+          "color": "yellow",
+          "text": "Posts are coming soon."
         },
         {
           "type": "h2",
-          "text": "Gallery"
+          "text": "Articles"
         },
         {
-          "type": "gallery",
-          "columns": "2",
+          "type": "inline",
           "items": [
             {
-              "image": "assets/images/project-1.png",
-              "title": "Felix Zoo",
-              "desc": "Improved UI/UX and made the whole platform fully responsive.",
-              "tags": "Web development, Frontend",
-              "url": "https://feliks.uz/"
+              "icon": "🐘",
+              "label": "PostgreSQL tips (draft)",
+              "url": ""
             },
             {
-              "image": "assets/images/project-21.png",
-              "title": "Dern Support",
-              "desc": "Full company website built from scratch — frontend and backend.",
-              "tags": "Backend, Full stack",
-              "url": "https://dern-support-rqz7.onrender.com/"
-            },
-            {
-              "image": "assets/images/project-9.png",
-              "title": "Arrival",
-              "desc": "Web development project.",
-              "tags": "Web development",
+              "icon": "🐳",
+              "label": "Docker for Node.js (draft)",
               "url": ""
             }
           ]
-        }
-      ],
-      "fullWidth": true
-    },
-    {
-      "slug": "projects/felix-zoo",
-      "title": "Felix Zoo",
-      "icon": "🦁",
-      "cover": "assets/images/project-1.png",
-      "description": "Felix Zoo — frontend project by Muhammadaziz.",
-      "blocks": [
-        {
-          "type": "callout",
-          "icon": "📌",
-          "color": "gray",
-          "text": "**Role:** Frontend Developer\n**When:** Apr — Jun 2025\n**Stack:** HTML, CSS, JavaScript"
-        },
-        {
-          "type": "text",
-          "text": "Improved the UI/UX of an online zoo shop and made the entire platform fully responsive, optimizing performance and usability on every screen size."
-        },
-        {
-          "type": "bookmark",
-          "url": "https://feliks.uz/",
-          "title": "Felix Zoo — online pet shop",
-          "desc": "Live website of the project.",
-          "image": "assets/images/project-1.png"
-        },
-        {
-          "type": "image",
-          "src": "assets/images/project-1.png",
-          "caption": "Home page",
-          "width": "full"
-        }
-      ]
-    },
-    {
-      "slug": "projects/dern-support",
-      "title": "Dern Support",
-      "icon": "🛠️",
-      "cover": "assets/images/project-21.png",
-      "description": "Dern Support — full stack project by Muhammadaziz.",
-      "blocks": [
-        {
-          "type": "callout",
-          "icon": "📌",
-          "color": "gray",
-          "text": "**Role:** Full Stack Developer\n**When:** May — Jul 2025\n**Stack:** Node.js, Express, PostgreSQL"
-        },
-        {
-          "type": "text",
-          "text": "Developed a full company website from scratch, handling both frontend and backend with optimized performance."
-        },
-        {
-          "type": "bookmark",
-          "url": "https://dern-support-rqz7.onrender.com/",
-          "title": "Dern Support",
-          "desc": "Live website of the project.",
-          "image": "assets/images/project-21.png"
-        },
-        {
-          "type": "image",
-          "src": "assets/images/project-21.png",
-          "caption": "Home page",
-          "width": "full"
-        }
-      ]
-    },
-    {
-      "slug": "projects/arrival",
-      "title": "Arrival",
-      "icon": "🚀",
-      "cover": "assets/images/project-9.png",
-      "description": "Arrival — web project by Muhammadaziz.",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Web development project. Add the details here: what problem it solves, your role and the stack."
-        },
-        {
-          "type": "image",
-          "src": "assets/images/project-9.png",
-          "caption": "",
-          "width": "full"
         }
       ]
     },
@@ -734,324 +555,6 @@
           "success": "Thanks! Your message has been sent — I'll get back to you soon."
         }
       ]
-    },
-    {
-      "slug": "nodejs",
-      "title": "Node.js",
-      "icon": "si:nodedotjs",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "h2",
-          "text": "Resources to advance in Node.js"
-        },
-        {
-          "type": "linklist",
-          "items": [
-            {
-              "icon": "🌱",
-              "prefix": "",
-              "label": "Official Node.js docs",
-              "url": "https://nodejs.org/docs/latest/api/"
-            },
-            {
-              "icon": "🌱",
-              "prefix": "",
-              "label": "Node.js best practices",
-              "url": "https://github.com/goldbergyoni/nodebestpractices"
-            }
-          ]
-        },
-        {
-          "type": "h2",
-          "text": "Node.js theory"
-        },
-        {
-          "type": "database",
-          "title": "",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "",
-              "name": "Event loop",
-              "url": "/nodejs/event-loop",
-              "tags": "medium",
-              "note": "phases, microtasks"
-            },
-            {
-              "icon": "",
-              "name": "Streams & buffers",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Modules: CommonJS vs ESM",
-              "url": "",
-              "tags": "easy",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Error handling",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Worker threads & cluster",
-              "url": "",
-              "tags": "advanced",
-              "note": ""
-            }
-          ]
-        }
-      ],
-      "fullWidth": true,
-      "draft": true
-    },
-    {
-      "slug": "nodejs/event-loop",
-      "title": "Event loop",
-      "icon": "🔁",
-      "cover": "none",
-      "description": "",
-      "blocks": [
-        {
-          "type": "quote",
-          "text": "1. Timers (setTimeout, setInterval)\n2. Pending callbacks\n3. Poll (I/O)\n4. Check (setImmediate)\n5. Close callbacks"
-        },
-        {
-          "type": "text",
-          "text": "Write your notes here. Microtasks (`process.nextTick`, promises) run between every phase."
-        }
-      ],
-      "draft": true
-    },
-    {
-      "slug": "nestjs",
-      "title": "NestJS",
-      "icon": "si:nestjs",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "h2",
-          "text": "NestJS notes"
-        },
-        {
-          "type": "database",
-          "title": "",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "",
-              "name": "Modules, controllers, providers",
-              "url": "",
-              "tags": "easy",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Dependency injection",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Guards & interceptors",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "TypeORM integration",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            }
-          ]
-        }
-      ],
-      "fullWidth": true,
-      "draft": true
-    },
-    {
-      "slug": "databases",
-      "title": "SQL & Databases",
-      "icon": "si:postgresql",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "h2",
-          "text": "Resources to advance in database design"
-        },
-        {
-          "type": "linklist",
-          "items": [
-            {
-              "icon": "🌱",
-              "prefix": "",
-              "label": "PostgreSQL docs",
-              "url": "https://www.postgresql.org/docs/"
-            }
-          ]
-        },
-        {
-          "type": "h2",
-          "text": "Data"
-        },
-        {
-          "type": "database",
-          "title": "",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "",
-              "name": "Indexes",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Normalization",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "ACID transactions",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Joins",
-              "url": "",
-              "tags": "easy",
-              "note": ""
-            }
-          ]
-        }
-      ],
-      "fullWidth": true,
-      "draft": true
-    },
-    {
-      "slug": "devops",
-      "title": "Docker & DevOps",
-      "icon": "si:docker",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "h2",
-          "text": "Notes"
-        },
-        {
-          "type": "database",
-          "title": "",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "",
-              "name": "Dockerfile basics",
-              "url": "",
-              "tags": "easy",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "docker compose",
-              "url": "",
-              "tags": "easy",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "CI/CD with GitHub Actions",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Nginx reverse proxy",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            }
-          ]
-        }
-      ],
-      "fullWidth": true,
-      "draft": true
-    },
-    {
-      "slug": "system-design",
-      "title": "System Design",
-      "icon": "🏗️",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "h2",
-          "text": "Notes"
-        },
-        {
-          "type": "database",
-          "title": "",
-          "tagColors": "easy=orange, medium=blue, medium+=red, advanced=green, library=gray",
-          "items": [
-            {
-              "icon": "",
-              "name": "Load balancing",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Caching",
-              "url": "",
-              "tags": "medium",
-              "note": ""
-            },
-            {
-              "icon": "",
-              "name": "Message queues",
-              "url": "",
-              "tags": "advanced",
-              "note": ""
-            }
-          ]
-        }
-      ],
-      "fullWidth": true,
-      "draft": true
-    },
-    {
-      "slug": "blog",
-      "title": "Blog",
-      "icon": "📝",
-      "cover": "",
-      "description": "",
-      "blocks": [
-        {
-          "type": "text",
-          "text": "Articles coming soon."
-        }
-      ],
-      "draft": true
     }
   ]
 }
