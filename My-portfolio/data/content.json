@@ -58,8 +58,8 @@
             {
               "icon": "si:telegram",
               "label": "Telegram",
-              "desc": "@muhammadaziz_xabibullayev",
-              "url": "https://t.me/muhammadaziz_xabibullayev"
+              "desc": "@mukhammadaziz_x",
+              "url": "https://t.me/mukhammadaziz_x"
             },
             {
               "icon": "si:github",
@@ -72,12 +72,6 @@
               "label": "Instagram",
               "desc": "@muhammadaziz.insight",
               "url": "https://instagram.com/muhammadaziz.insight"
-            },
-            {
-              "icon": "si:facebook",
-              "label": "Facebook",
-              "desc": "MuhammadAziz Xabibullayev",
-              "url": "https://www.facebook.com/p/MuhammadAziz-Xabibullayev-100075441524800/"
             }
           ]
         },
