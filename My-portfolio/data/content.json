@@ -46,7 +46,7 @@
           "type": "callout",
           "icon": "🎓",
           "color": "blue",
-          "text": "Currently studying at **PDP University** (2024 — 2028) and open to freelance & full-time backend roles."
+          "text": "Currently studying at **PDP University** (2024 — 2028)"
         },
         {
           "type": "h2",
@@ -264,16 +264,22 @@
           "type": "timeline",
           "items": [
             {
-              "date": "May — Jul 2025",
-              "title": "Full Stack Developer",
-              "subtitle": "Dern Support",
-              "text": "Developed a full company website from scratch, handling both frontend and backend with optimized performance."
+              "date": "Aug 2026 - Present",
+              "title": "SIFCO International",
+              "subtitle": "Software Engineer",
+              "text": ""
             },
             {
               "date": "Apr — Jun 2025",
               "title": "Frontend Developer",
               "subtitle": "Felix Zoo",
               "text": "Improved UI/UX and made the entire platform fully responsive, optimizing performance and usability."
+            },
+            {
+              "date": "May — Jul 2025",
+              "title": "Full Stack Developer",
+              "subtitle": "Dern Support",
+              "text": "Developed a full company website from scratch, handling both frontend and backend with optimized performance."
             }
           ]
         },
