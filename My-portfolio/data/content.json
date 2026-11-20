@@ -40,13 +40,19 @@
       "blocks": [
         {
           "type": "text",
-          "text": "Hi! I'm **Muhammadaziz Khabibullaev**, a **Software Engineer** from Tashkent, 🇺🇿 Uzbekistan. I enjoy turning complex problems into simple, clear and scalable solutions.\n\nMy job is to build reliable backend systems — stable architecture, clean APIs and solid database design — so your product is **fast, secure and efficient**."
+          "text": "Hi! I'm **Muhammadaziz Khabibullaev**, a **Software Engineer** from Tashkent, 🇺🇿 Uzbekistan. I enjoy turning complex problems into simple, clear and scalable solutions.\n\nI build reliable backend systems — stable architecture, clean APIs and solid database design — and the pieces around them: web dashboards, Telegram bots and mobile apps, from database to deploy. The goal is always the same: a product that is **fast, secure and easy to maintain**."
         },
         {
           "type": "callout",
           "icon": "🎓",
           "color": "blue",
           "text": "Currently studying at **PDP University** (2024 — 2028)"
+        },
+        {
+          "type": "callout",
+          "icon": "📦",
+          "color": "green",
+          "text": "**Latest project — Union Paper.** An internal logistics platform: rail import tracking, a delivery desk with a live map, a Telegram bot and a Flutter driver app. [Read the case study →](/projects/union-paper)"
         },
         {
           "type": "h2",
@@ -66,6 +72,12 @@
               "label": "GitHub",
               "desc": "mukhammadaziz-x",
               "url": "https://github.com/mukhammadaziz-x"
+            },
+            {
+              "icon": "si:gitlab",
+              "label": "GitLab",
+              "desc": "mukhammadaziz-x",
+              "url": "https://gitlab.com/mukhammadaziz-x"
             },
             {
               "icon": "si:instagram",
@@ -120,25 +132,37 @@
             {
               "icon": "⚙️",
               "title": "Backend Development",
-              "desc": "Secure, scalable and efficient backend systems using modern technologies and best practices.",
+              "desc": "Secure, scalable backends in Python (FastAPI) and Node.js (NestJS, Express).",
               "url": ""
             },
             {
               "icon": "🔌",
-              "title": "API Development & Integration",
-              "desc": "Clean, well-documented REST and GraphQL APIs, plus seamless third-party integrations.",
+              "title": "APIs & Integrations",
+              "desc": "Clean REST, GraphQL and WebSocket APIs, plus integrations like Bitrix24 CRM and maps.",
               "url": ""
             },
             {
               "icon": "🗄️",
               "title": "Database Design & Optimization",
-              "desc": "Structured, optimized PostgreSQL / MySQL databases built for performance and reliability.",
+              "desc": "PostgreSQL / MySQL schemas, indexes and Redis caching, built for speed and reliability.",
+              "url": ""
+            },
+            {
+              "icon": "🤖",
+              "title": "Telegram Bots",
+              "desc": "Bots with aiogram: file uploads, notifications and passwordless login.",
+              "url": ""
+            },
+            {
+              "icon": "📱",
+              "title": "Web & Mobile Apps",
+              "desc": "Dashboards in Next.js + Tailwind CSS and mobile apps in Flutter.",
               "url": ""
             },
             {
               "icon": "🚀",
               "title": "DevOps & Deployment",
-              "desc": "Docker, Linux and CI/CD pipelines — deployed and maintained for smooth, stable performance.",
+              "desc": "Docker, Linux, nginx and GitLab CI/CD with automatic deploys, backups and rollback.",
               "url": ""
             }
           ]
@@ -148,8 +172,27 @@
           "text": "Tech stack"
         },
         {
+          "type": "h3",
+          "text": "Backend"
+        },
+        {
           "type": "badges",
           "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "FastAPI",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "SQLAlchemy",
+              "color": "red",
+              "url": ""
+            },
             {
               "label": "Node.js",
               "color": "green",
@@ -174,17 +217,16 @@
               "label": "TypeORM",
               "color": "orange",
               "url": ""
-            },
-            {
-              "label": "PostgreSQL",
-              "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "MySQL",
-              "color": "yellow",
-              "url": ""
-            },
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "APIs"
+        },
+        {
+          "type": "badges",
+          "items": [
             {
               "label": "REST",
               "color": "purple",
@@ -196,6 +238,83 @@
               "url": ""
             },
             {
+              "label": "WebSocket",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "aiogram",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Bitrix24 API",
+              "color": "blue",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Databases"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "MySQL",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "Redis / Valkey",
+              "color": "red",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Frontend & mobile"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Flutter",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Leaflet",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "DevOps"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
               "label": "Docker",
               "color": "blue",
               "url": ""
@@ -206,8 +325,18 @@
               "url": ""
             },
             {
-              "label": "CI/CD",
+              "label": "nginx",
               "color": "green",
+              "url": ""
+            },
+            {
+              "label": "systemd",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "GitLab CI/CD",
+              "color": "red",
               "url": ""
             }
           ]
@@ -694,9 +823,9 @@
               "url": ""
             },
             {
-              "icon": "📦",
-              "title": "13,600 t tracked",
-              "desc": "Imported cargo followed in 2026.",
+              "icon": "🔎",
+              "title": "460× faster search",
+              "desc": "Suffix-array index instead of LIKE, measured on 20,000 rows.",
               "url": ""
             }
           ]
