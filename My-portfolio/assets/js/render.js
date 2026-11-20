@@ -251,7 +251,7 @@
       return `<div class="b-columns" style="--cols:${cols.length || 1}">${cols.map((c) => `<div class="b-col">${renderBlocks(c && c.blocks)}</div>`).join('')}</div>`;
     },
 
-    // Contact form — submitted to Netlify Forms by site.js (form "contact" is declared statically in index.html).
+    // Contact form — submitted by site.js to /api/contact (netlify/functions/contact.mjs), which forwards it to Telegram.
     form: (b) =>
       `<form class="b-form" name="contact" method="POST" action="/" data-success="${esc(b.success || 'Thanks! Your message has been sent.')}">
         <input type="hidden" name="form-name" value="contact">

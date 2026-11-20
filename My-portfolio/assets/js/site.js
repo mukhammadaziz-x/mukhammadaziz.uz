@@ -231,7 +231,7 @@
   // Mobile menu.
   $('#menu-toggle').addEventListener('click', () => document.body.classList.toggle('menu-open'));
 
-  // Contact form → Netlify Forms.
+  // Contact form → /api/contact (Netlify Function, netlify/functions/contact.mjs) → Telegram.
   document.addEventListener('submit', async (e) => {
     const form = e.target.closest('.b-form');
     if (!form) return;
@@ -246,18 +246,20 @@
     status.className = 'form-status';
     status.textContent = 'Sending…';
     try {
-      const r = await fetch('/', {
+      const r = await fetch('/api/contact', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString(),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
       });
-      if (!r.ok) throw new Error(r.status);
+      const res = await r.json().catch(() => ({}));
+      if (!r.ok || !res.ok) throw new Error(res.error || r.status);
       form.reset();
       status.classList.add('ok');
       status.textContent = form.dataset.success;
     } catch (err) {
       status.classList.add('err');
-      status.textContent = 'Could not send the message. Please write to me directly.';
+      const reason = err && typeof err.message === 'string' && /[a-z]/i.test(err.message) ? err.message + ' ' : '';
+      status.textContent = reason + 'If it keeps failing, write to me on Telegram: @mukhammadaziz_x';
     } finally {
       btn.disabled = false;
     }

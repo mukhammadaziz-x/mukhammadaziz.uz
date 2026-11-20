@@ -17,7 +17,8 @@ const vm = require('vm');
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, 'dist');
 // Source-only files that must not be published as-is. Pages, admin, _redirects and _headers are generated below.
-const SKIP = new Set(['dist', 'scripts', 'node_modules', 'netlify.toml', 'package.json', 'index.html', 'admin.html', '_redirects', '_headers', '.gitignore']);
+// Dotfiles (.env with secrets, .gitignore…) are never published either — see the copy loop.
+const SKIP = new Set(['dist', 'scripts', 'netlify', 'node_modules', 'netlify.toml', 'package.json', 'index.html', 'admin.html', '_redirects', '_headers']);
 
 const fail = (msg) => {
   console.error('✗ Build failed: ' + msg);
@@ -64,7 +65,7 @@ if (adminPath && seen.has(adminPath)) fail(`ADMIN_PATH "/${adminPath}" collides 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 for (const name of fs.readdirSync(ROOT)) {
-  if (SKIP.has(name)) continue;
+  if (SKIP.has(name) || name.startsWith('.')) continue;
   fs.cpSync(path.join(ROOT, name), path.join(OUT, name), { recursive: true });
 }
 
