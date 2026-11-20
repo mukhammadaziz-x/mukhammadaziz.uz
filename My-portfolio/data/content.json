@@ -68,6 +68,18 @@
               "url": "https://t.me/mukhammadaziz_x"
             },
             {
+              "icon": "si:gmail",
+              "label": "Email",
+              "desc": "muhammadazizxabibullayev@gmail.com",
+              "url": "mailto:muhammadazizxabibullayev@gmail.com"
+            },
+            {
+              "icon": "📞",
+              "label": "Phone",
+              "desc": "+998 88 082 94 44",
+              "url": "tel:+998880829444"
+            },
+            {
               "icon": "si:github",
               "label": "GitHub",
               "desc": "mukhammadaziz-x",
@@ -80,10 +92,46 @@
               "url": "https://gitlab.com/mukhammadaziz-x"
             },
             {
+              "icon": "si:stackoverflow",
+              "label": "Stack Overflow",
+              "desc": "Muhammadaziz Xabibullayev",
+              "url": "https://stackoverflow.com/users/31898858/muhammadaziz-xabibullayev"
+            },
+            {
+              "icon": "assets/images/linkedin.svg",
+              "label": "LinkedIn",
+              "desc": "muhammadaziz-x",
+              "url": "https://www.linkedin.com/in/muhammadaziz-x/"
+            },
+            {
+              "icon": "si:medium",
+              "label": "Medium",
+              "desc": "@muhammadaziz-xabibullayev",
+              "url": "https://medium.com/@muhammadaziz-xabibullayev"
+            },
+            {
+              "icon": "si:youtube",
+              "label": "YouTube",
+              "desc": "@mukhammadaziz_x",
+              "url": "https://www.youtube.com/@mukhammadaziz_x"
+            },
+            {
+              "icon": "si:x",
+              "label": "X",
+              "desc": "@muhammadaziz_x",
+              "url": "https://x.com/muhammadaziz_x"
+            },
+            {
               "icon": "si:instagram",
               "label": "Instagram",
               "desc": "@muhammadaziz.insight",
               "url": "https://instagram.com/muhammadaziz.insight"
+            },
+            {
+              "icon": "si:vk",
+              "label": "VK",
+              "desc": "muhammadaziz_xabibullayev",
+              "url": "https://vk.ru/muhammadaziz_xabibullayev"
             }
           ]
         },
@@ -340,31 +388,6 @@
               "url": ""
             }
           ]
-        },
-        {
-          "type": "h1",
-          "text": "Testimonials"
-        },
-        {
-          "type": "toggle",
-          "title": "Siddiq Karimov",
-          "open": true,
-          "text": "Muhammadaziz built our corporate website from scratch. He handled the entire backend (Node.js + Express), PostgreSQL database, and admin panel single-handedly. Excellent code quality, fast delivery, and great communication. Highly recommended!"
-        },
-        {
-          "type": "toggle",
-          "title": "Jamshidbek Mirzakarimov",
-          "text": "Worked with Muhammadaziz on a project — his APIs were extremely clean and well-documented. Zero issues integrating on the frontend. He also set up Docker and CI/CD pipelines himself. Real professional!"
-        },
-        {
-          "type": "toggle",
-          "title": "Gulshoda Palonchiyeva",
-          "text": "Hired Muhammadaziz for a freelance project — he delivered high-quality work ahead of deadline. Always responsive and proactive. Definitely looking forward to working together again!"
-        },
-        {
-          "type": "toggle",
-          "title": "Muhammadali Botirov",
-          "text": "Despite his young age, Muhammadaziz has deep knowledge in backend development. Node.js, NestJS, TypeORM, PostgreSQL — he masters them all. His code follows clean architecture and best practices perfectly. Impressive!"
         },
         {
           "type": "divider"
