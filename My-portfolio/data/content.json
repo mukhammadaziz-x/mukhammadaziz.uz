@@ -468,22 +468,41 @@
               "value": 90
             },
             {
-              "label": "API Development",
+              "label": "APIs & Integrations",
               "value": 85
             },
             {
-              "label": "Database Management",
+              "label": "Database Design & Optimization",
               "value": 80
             },
             {
-              "label": "Server & Deployment",
+              "label": "DevOps & Deployment",
               "value": 70
             }
           ]
         },
         {
+          "type": "h3",
+          "text": "Backend"
+        },
+        {
           "type": "badges",
           "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "FastAPI",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "SQLAlchemy",
+              "color": "red",
+              "url": ""
+            },
             {
               "label": "Node.js",
               "color": "green",
@@ -508,17 +527,16 @@
               "label": "TypeORM",
               "color": "orange",
               "url": ""
-            },
-            {
-              "label": "PostgreSQL",
-              "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "MySQL",
-              "color": "yellow",
-              "url": ""
-            },
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "APIs"
+        },
+        {
+          "type": "badges",
+          "items": [
             {
               "label": "REST",
               "color": "purple",
@@ -530,6 +548,83 @@
               "url": ""
             },
             {
+              "label": "WebSocket",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "aiogram",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Bitrix24 API",
+              "color": "blue",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Databases"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "MySQL",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "Redis / Valkey",
+              "color": "red",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Frontend & mobile"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Flutter",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Leaflet",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "DevOps"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
               "label": "Docker",
               "color": "blue",
               "url": ""
@@ -540,8 +635,18 @@
               "url": ""
             },
             {
-              "label": "CI/CD",
+              "label": "nginx",
               "color": "green",
+              "url": ""
+            },
+            {
+              "label": "systemd",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "GitLab CI/CD",
+              "color": "red",
               "url": ""
             }
           ]
