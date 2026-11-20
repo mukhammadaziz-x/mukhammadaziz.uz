@@ -485,7 +485,7 @@
           "type": "callout",
           "icon": "📌",
           "color": "gray",
-          "text": "**Role:** Software Engineer — sole developer, from database to deploy\n**When:** 2026\n**Client:** Union Paper and Board (SIFCO International group)"
+          "text": "**Role:** Software Engineer\n**When:** 2026\n**Client:** Union Paper and Board"
         },
         {
           "type": "callout",
@@ -683,7 +683,7 @@
           "items": [
             {
               "icon": "🧪",
-              "title": "2,700+ automated tests",
+              "title": "2,000+ automated tests",
               "desc": "Backend, worker, bot, web and mobile.",
               "url": ""
             },
