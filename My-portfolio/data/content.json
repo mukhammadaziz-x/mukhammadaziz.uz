@@ -221,7 +221,7 @@
         },
         {
           "type": "h3",
-          "text": "Backend"
+          "text": "Languages"
         },
         {
           "type": "badges",
@@ -232,13 +232,57 @@
               "url": ""
             },
             {
+              "label": "JavaScript",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Dart",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SQL",
+              "color": "orange",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Backend"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
               "label": "FastAPI",
               "color": "green",
               "url": ""
             },
             {
-              "label": "SQLAlchemy",
+              "label": "SQLAlchemy (async)",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Alembic",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Pydantic v2",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Django",
+              "color": "green",
               "url": ""
             },
             {
@@ -257,54 +301,69 @@
               "url": ""
             },
             {
-              "label": "TypeScript",
-              "color": "blue",
-              "url": ""
-            },
-            {
               "label": "TypeORM",
               "color": "orange",
-              "url": ""
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "text": "APIs"
-        },
-        {
-          "type": "badges",
-          "items": [
-            {
-              "label": "REST",
-              "color": "purple",
-              "url": ""
-            },
-            {
-              "label": "GraphQL",
-              "color": "pink",
-              "url": ""
-            },
-            {
-              "label": "WebSocket",
-              "color": "gray",
               "url": ""
             },
             {
               "label": "aiogram",
               "color": "blue",
               "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Frontend & mobile"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "HTML / CSS",
+              "color": "orange",
+              "url": ""
             },
             {
-              "label": "Bitrix24 API",
+              "label": "React",
               "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Flutter",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SASS",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Bootstrap",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "Leaflet",
+              "color": "green",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "Databases"
+          "text": "Databases & caching"
         },
         {
           "type": "badges",
@@ -320,50 +379,75 @@
               "url": ""
             },
             {
-              "label": "Redis / Valkey",
+              "label": "MongoDB",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "SQLite",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Redis",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Valkey",
+              "color": "purple",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "Frontend & mobile"
+          "text": "APIs & network"
         },
         {
           "type": "badges",
           "items": [
             {
-              "label": "Next.js",
+              "label": "REST",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "GraphQL",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "WebSockets",
               "color": "gray",
               "url": ""
             },
             {
-              "label": "Tailwind CSS",
-              "color": "blue",
+              "label": "JWT",
+              "color": "pink",
               "url": ""
             },
             {
-              "label": "Flutter",
+              "label": "Bitrix24 API",
               "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "Leaflet",
-              "color": "green",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "DevOps"
+          "text": "DevOps & cloud"
         },
         {
           "type": "badges",
           "items": [
             {
               "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Docker Compose",
               "color": "blue",
               "url": ""
             },
@@ -385,6 +469,45 @@
             {
               "label": "GitLab CI/CD",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "AWS",
+              "color": "orange",
+              "url": ""
+            },
+            {
+              "label": "DigitalOcean",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Vercel",
+              "color": "gray",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Architecture"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Clean Architecture",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "System Design",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "DSA",
+              "color": "yellow",
               "url": ""
             }
           ]
@@ -483,7 +606,7 @@
         },
         {
           "type": "h3",
-          "text": "Backend"
+          "text": "Languages"
         },
         {
           "type": "badges",
@@ -494,13 +617,57 @@
               "url": ""
             },
             {
+              "label": "JavaScript",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Dart",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SQL",
+              "color": "orange",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Backend"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
               "label": "FastAPI",
               "color": "green",
               "url": ""
             },
             {
-              "label": "SQLAlchemy",
+              "label": "SQLAlchemy (async)",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Alembic",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Pydantic v2",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Django",
+              "color": "green",
               "url": ""
             },
             {
@@ -519,54 +686,69 @@
               "url": ""
             },
             {
-              "label": "TypeScript",
-              "color": "blue",
-              "url": ""
-            },
-            {
               "label": "TypeORM",
               "color": "orange",
-              "url": ""
-            }
-          ]
-        },
-        {
-          "type": "h3",
-          "text": "APIs"
-        },
-        {
-          "type": "badges",
-          "items": [
-            {
-              "label": "REST",
-              "color": "purple",
-              "url": ""
-            },
-            {
-              "label": "GraphQL",
-              "color": "pink",
-              "url": ""
-            },
-            {
-              "label": "WebSocket",
-              "color": "gray",
               "url": ""
             },
             {
               "label": "aiogram",
               "color": "blue",
               "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Frontend & mobile"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "HTML / CSS",
+              "color": "orange",
+              "url": ""
             },
             {
-              "label": "Bitrix24 API",
+              "label": "React",
               "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Flutter",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SASS",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Bootstrap",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "Leaflet",
+              "color": "green",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "Databases"
+          "text": "Databases & caching"
         },
         {
           "type": "badges",
@@ -582,50 +764,75 @@
               "url": ""
             },
             {
-              "label": "Redis / Valkey",
+              "label": "MongoDB",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "SQLite",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Redis",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Valkey",
+              "color": "purple",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "Frontend & mobile"
+          "text": "APIs & network"
         },
         {
           "type": "badges",
           "items": [
             {
-              "label": "Next.js",
+              "label": "REST",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "GraphQL",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "WebSockets",
               "color": "gray",
               "url": ""
             },
             {
-              "label": "Tailwind CSS",
-              "color": "blue",
+              "label": "JWT",
+              "color": "pink",
               "url": ""
             },
             {
-              "label": "Flutter",
+              "label": "Bitrix24 API",
               "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "Leaflet",
-              "color": "green",
               "url": ""
             }
           ]
         },
         {
           "type": "h3",
-          "text": "DevOps"
+          "text": "DevOps & cloud"
         },
         {
           "type": "badges",
           "items": [
             {
               "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Docker Compose",
               "color": "blue",
               "url": ""
             },
@@ -647,6 +854,45 @@
             {
               "label": "GitLab CI/CD",
               "color": "red",
+              "url": ""
+            },
+            {
+              "label": "AWS",
+              "color": "orange",
+              "url": ""
+            },
+            {
+              "label": "DigitalOcean",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Vercel",
+              "color": "gray",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h3",
+          "text": "Architecture"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Clean Architecture",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "System Design",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "DSA",
+              "color": "yellow",
               "url": ""
             }
           ]
