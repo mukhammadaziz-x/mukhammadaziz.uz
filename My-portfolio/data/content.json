@@ -414,8 +414,8 @@
             {
               "image": "assets/images/project-union-paper.jpg",
               "title": "Union Paper",
-              "desc": "Website and logistics platform for Union Paper and Board.",
-              "tags": "Backend, Full stack",
+              "desc": "Internal logistics platform: rail import tracking, delivery desk, live map and a driver app.",
+              "tags": "Full stack, Backend, Mobile",
               "url": "/projects/union-paper"
             },
             {
@@ -479,31 +479,259 @@
       "title": "Union Paper",
       "icon": "📦",
       "cover": "assets/images/project-union-paper.jpg",
-      "description": "Union Paper — project by Muhammadaziz Xabibullayev.",
+      "description": "Union Paper — an internal logistics platform (import tracking, delivery, driver app) built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
         {
           "type": "callout",
           "icon": "📌",
           "color": "gray",
-          "text": "**Role:** Full Stack Developer\n**When:** 2025\n**Stack:** —"
+          "text": "**Role:** Software Engineer — sole developer, from database to deploy\n**When:** 2026\n**Client:** Union Paper and Board (SIFCO International group)"
+        },
+        {
+          "type": "callout",
+          "icon": "🔒",
+          "color": "blue",
+          "text": "This is a **private internal system**, so its address and screens are not public. The link below is the company's public website; everything described here runs behind login."
         },
         {
           "type": "text",
-          "text": "Website and logistics platform for **Union Paper and Board**. Details coming soon."
+          "text": "Union Paper imports paper and board by rail and delivers it to clients across Tashkent. Before this project, incoming wagons were tracked by hand in Excel, and deliveries were coordinated by phone.\n\nI designed and built one platform that covers the whole chain: **wagon on the railway → warehouse → truck → client's door**. It is a website for the office, a Telegram bot for uploads and login, and a mobile app for drivers."
+        },
+        {
+          "type": "h1",
+          "text": "Stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "FastAPI",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SQLAlchemy",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Redis / Valkey",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "WebSocket",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "aiogram",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Flutter",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Leaflet + OSRM",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "Bitrix24 API",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "GitLab CI/CD",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "nginx + systemd",
+              "color": "green",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "What I built"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "🚂",
+              "title": "Import tracking",
+              "desc": "Two Excel reports become one live table: what is coming, from whom, where the wagon is now and when it arrives.",
+              "url": ""
+            },
+            {
+              "icon": "🗺️",
+              "title": "Wagon map",
+              "desc": "Every wagon on a map, drawn along real railway lines, with stops coloured by how long it stood.",
+              "url": ""
+            },
+            {
+              "icon": "🚚",
+              "title": "Delivery desk",
+              "desc": "CRM deals turn into trips: multi-stop routes, driver offers, a live fleet map and trip replay.",
+              "url": ""
+            },
+            {
+              "icon": "📱",
+              "title": "Driver app",
+              "desc": "Flutter app: accept a trip, statuses set by GPS geofences, works offline, payment ledger.",
+              "url": ""
+            },
+            {
+              "icon": "🤖",
+              "title": "Telegram bot",
+              "desc": "File uploads with admin approval, passwordless login, and group notifications per trip.",
+              "url": ""
+            },
+            {
+              "icon": "🔐",
+              "title": "Roles and audit",
+              "desc": "A role graph edited by the admin, 'log in as' for testing, and a journal of logins and status changes.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Problems and how I solved them"
+        },
+        {
+          "type": "toggle",
+          "open": true,
+          "title": "Two Excel files that never agree",
+          "text": "**Problem.** The shipment report writes a wagon as `291-11366/2`, the railway report as `29111366`, and the same file is often uploaded twice.\n\n**Solution.** One normalisation rule turns every spelling into an 8-digit key, so the two files join into a single row. Uploads are idempotent: a file is recognised by its SHA-256 hash and each line by its own hash, so re-uploading never creates duplicates. Fields edited by a person are marked as manual and are never overwritten by the next file."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Search that stays instant",
+          "text": "**Problem.** `LIKE '%text%'` reads the whole table on every keystroke.\n\n**Solution.** I indexed every suffix of the reference tables (a suffix array) so that 'contains' becomes 'starts with' — which is a binary search. Measured at 20,000 rows it answers about 460× faster, with exactly the same results. A test fails the build if someone adds a plain substring scan."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "A map that does not lie",
+          "text": "**Problem.** The railway report only names stations. Straight lines between them crossed half a continent, and a wrong coordinate drew a wagon travelling somewhere it had never been.\n\n**Solution.** Stations are geocoded and then checked against geography: a new point must be near the other stations of the same railway, or it is rejected. Routes follow real rails from OpenStreetMap, shared stretches are merged into one line, and a route belongs to one arrival — an empty return trip is never drawn as our delivery."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Statuses nobody has to press",
+          "text": "**Problem.** Drivers forget to press buttons, so the office never knows where a truck really is.\n\n**Solution.** The app records GPS and the server decides: entering the warehouse territory, leaving it and arriving at the client set the status automatically through geofences. Points are queued on the phone and sent in batches, so a tunnel or a dead zone loses nothing. If a manual mark contradicts GPS, the app asks 'Are you sure?' and the answer is written to history."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "A trip is not an order",
+          "text": "**Problem.** One truck carries several orders, and one large order is split across several trucks — a single 'order status' could not describe that.\n\n**Solution.** I separated the model into deals, trips, stops and allocations. The deal's status is computed from its trips, the unload order is the route, and the page draws a loading plan of the truck body — first unload at the doors, loaded last."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Money that always adds up",
+          "text": "**Problem.** Driver payments lived in notebooks, and the company's numbers and the drivers' numbers disagreed.\n\n**Solution.** A ledger: every delivered trip becomes a debt, every payment is allocated FIFO to the oldest debt, and the remainder becomes an advance. The driver sees the same numbers in the app that the cashier sees on the site."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Login without passwords — and without the usual hole",
+          "text": "**Problem.** Staff should not manage passwords, but 'log in with a link' can be abused: someone sends you their link and you confirm their session.\n\n**Solution.** Login goes through the Telegram bot, which shows the device and address that asked and waits for 'Yes, it's me'. Refresh tokens rotate with reuse detection, and an open tab is closed the moment a user is blocked."
+        },
+        {
+          "type": "h1",
+          "text": "In numbers"
+        },
+        {
+          "type": "cards",
+          "columns": "3",
+          "items": [
+            {
+              "icon": "🧪",
+              "title": "2,700+ automated tests",
+              "desc": "Backend, worker, bot, web and mobile.",
+              "url": ""
+            },
+            {
+              "icon": "⚡",
+              "title": "Under 50 ms",
+              "desc": "Typical API response on live data.",
+              "url": ""
+            },
+            {
+              "icon": "📦",
+              "title": "13,600 t tracked",
+              "desc": "Imported cargo followed in 2026.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "How it ships"
+        },
+        {
+          "type": "text",
+          "text": "Every change goes through GitLab CI: tests, secret scanning, build, then an automatic deploy with a database backup, backward-compatible migrations, a health check and automatic rollback. Production runs as systemd services behind nginx on a shared company server, with nightly backups and a watchdog that reports to Telegram."
         },
         {
           "type": "bookmark",
           "url": "https://unionpaper.uz/",
           "title": "Union Paper and Board",
-          "desc": "Live website of the project.",
-          "image": "assets/images/project-union-paper.jpg"
+          "desc": "Public website of the company. The platform itself is internal.",
+          "image": "assets/images/project-union-paper-site.jpg"
+        },
+        {
+          "type": "h1",
+          "text": "How a delivery works"
         },
         {
           "type": "video",
           "src": "assets/videos/union-paper.mp4",
           "poster": "assets/images/project-union-paper.jpg",
-          "caption": "Union Paper — project video",
+          "caption": "From order to the client's warehouse — animated walkthrough",
           "width": "medium"
+        },
+        {
+          "type": "button",
+          "icon": "📬",
+          "label": "Want something like this? Let's talk",
+          "url": "/contact"
         }
       ]
     },
