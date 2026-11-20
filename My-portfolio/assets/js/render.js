@@ -155,6 +155,10 @@
       b.src
         ? `<figure class="b-image w-${esc(b.width || 'full')}"><img src="${src(b.src)}" alt="${esc(b.caption)}" loading="lazy" data-zoom>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
         : '',
+    video: (b) =>
+      b.src
+        ? `<figure class="b-video w-${esc(b.width || 'full')}"><video src="${src(b.src)}"${b.poster ? ` poster="${src(b.poster)}"` : ''} controls playsinline preload="metadata"></video>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
+        : '',
     bookmark: (b) => {
       let host = '';
       try { host = new URL(b.url).hostname; } catch (e) {}

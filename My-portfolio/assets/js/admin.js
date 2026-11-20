@@ -30,6 +30,7 @@
     callout: { label: 'Callout', glyph: '💡', desc: 'Box with icon — can hold other blocks', fields: [F.icon('icon', 'Icon (empty = none)'), F.color('color', 'Background'), F.area('text', 'Text', MD)], children: true },
     bookmark: { label: 'Bookmark', glyph: '🔖', desc: 'Link preview card', fields: [F.url('url', 'URL'), F.text('title', 'Title'), F.text('desc', 'Description'), F.image('image', 'Preview image')] },
     image: { label: 'Image', glyph: '🖼', desc: 'Picture, click to zoom', fields: [F.image('src'), F.text('caption', 'Caption'), F.select('width', 'Width', ['full', 'medium', 'small'])] },
+    video: { label: 'Video', glyph: '🎬', desc: 'MP4 video with player controls', fields: [F.text('src', 'Video file', 'assets/videos/…mp4  or  https://…mp4'), F.image('poster', 'Poster image (shown before play)'), F.text('caption', 'Caption'), F.select('width', 'Width', ['full', 'medium', 'small'])] },
     quote: { label: 'Quote', glyph: '❝', desc: 'Quote or highlighted list', fields: [F.area('text', 'Quote', MD), F.text('author', 'Author')] },
     toggle: { label: 'Toggle', glyph: '▸', desc: 'Collapsible section', fields: [F.text('title', 'Title'), F.area('text', 'Hidden text', MD), F.check('open', 'Open by default')], children: true },
     bullets: { label: 'List', glyph: '•', desc: 'Bulleted or numbered list', fields: [F.area('text', 'Items', 'One item per line'), F.check('ordered', 'Numbered list')] },

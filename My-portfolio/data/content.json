@@ -412,6 +412,13 @@
           "columns": "2",
           "items": [
             {
+              "image": "assets/images/project-union-paper.jpg",
+              "title": "Union Paper",
+              "desc": "Website and logistics platform for Union Paper and Board.",
+              "tags": "Backend, Full stack",
+              "url": "/projects/union-paper"
+            },
+            {
               "image": "assets/images/project-1.png",
               "title": "Felix Zoo",
               "desc": "Improved UI/UX and made the whole platform fully responsive.",
@@ -464,6 +471,39 @@
               "url": "assets/images/certifications/Notiqlik san'ati.pdf"
             }
           ]
+        }
+      ]
+    },
+    {
+      "slug": "projects/union-paper",
+      "title": "Union Paper",
+      "icon": "📦",
+      "cover": "assets/images/project-union-paper.jpg",
+      "description": "Union Paper — project by Muhammadaziz Xabibullayev.",
+      "blocks": [
+        {
+          "type": "callout",
+          "icon": "📌",
+          "color": "gray",
+          "text": "**Role:** Full Stack Developer\n**When:** 2025\n**Stack:** —"
+        },
+        {
+          "type": "text",
+          "text": "Website and logistics platform for **Union Paper and Board**. Details coming soon."
+        },
+        {
+          "type": "bookmark",
+          "url": "https://unionpaper.uz/",
+          "title": "Union Paper and Board",
+          "desc": "Live website of the project.",
+          "image": "assets/images/project-union-paper.jpg"
+        },
+        {
+          "type": "video",
+          "src": "assets/videos/union-paper.mp4",
+          "poster": "assets/images/project-union-paper.jpg",
+          "caption": "Union Paper — project video",
+          "width": "medium"
         }
       ]
     },

@@ -325,6 +325,13 @@ mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 3
 .b-image.w-medium { max-width: 70%; margin-left: 0; }
 .b-image.w-small { max-width: 45%; margin-left: 0; }
 .b-image figcaption { font-size: 14px; color: var(--text-muted); padding: 6px 2px 0; }
+
+/* video — portrait clips are capped in height so they don't fill the whole page */
+.b-video { margin: 8px auto; }
+.b-video video { display: block; width: 100%; max-height: 80vh; margin: 0 auto; border-radius: 8px; background: #000; object-fit: contain; }
+.b-video.w-medium { max-width: 70%; margin-left: 0; }
+.b-video.w-small { max-width: 45%; margin-left: 0; }
+.b-video figcaption { font-size: 14px; color: var(--text-muted); padding: 6px 2px 0; }
 .zoom {
   position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 3vmin;
   background: rgba(10, 10, 10, 0); cursor: zoom-out; transition: background-color .2s;
@@ -599,7 +606,7 @@ img.sr-icon { border-radius: 4px; object-fit: cover; }
   .b-progress { grid-template-columns: 1fr; }
   .cover { height: 22vh; min-height: 140px; }
   .cover-collage img:nth-child(n+4) { display: none; }
-  .b-image.w-medium, .b-image.w-small { max-width: 100%; }
+  .b-image.w-medium, .b-image.w-small, .b-video.w-medium, .b-video.w-small { max-width: 100%; }
   .bm-img { display: none; }
 
   .menu-toggle { display: grid; }
