@@ -953,27 +953,6 @@
           "columns": "3",
           "items": [
             {
-              "image": "assets/images/certifications/promt-engineering.png",
-              "title": "Prompt Engineering",
-              "desc": "Osnova — 2025",
-              "tags": "",
-              "url": "assets/images/certifications/GPT_ основы промпт-инженерии.pdf"
-            },
-            {
-              "image": "assets/images/certifications/critical thinking.png",
-              "title": "Critical Thinking",
-              "desc": "Osnova — 2025",
-              "tags": "",
-              "url": "assets/images/certifications/Tanqidiy fikrlash.pdf"
-            },
-            {
-              "image": "assets/images/certifications/notiqlik.png",
-              "title": "Public Speaking",
-              "desc": "Najot Nur — 2024–2025",
-              "tags": "",
-              "url": "assets/images/certifications/Notiqlik san'ati.pdf"
-            },
-            {
               "image": "assets/uploads/1795329597998-muhammadaziz-xabibullayev.png",
               "title": "AI-500 Hackathon",
               "desc": "IT Community of Uzbekistan",
@@ -981,11 +960,81 @@
               "url": "assets/uploads/1795329597998-muhammadaziz-xabibullayev.pdf"
             },
             {
+              "image": "assets/uploads/1795330665209-muhammadaziz-xabibullayev-ma-lumotlar-tu.png",
+              "title": "Data Structures & Algorithms",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://praktikum.mohirdev.uz/certificate/verify?id=prac-04ca85b4"
+            },
+            {
+              "image": "assets/images/certifications/notiqlik.png",
+              "title": "Public Speaking",
+              "desc": "Najot Nur",
+              "tags": "",
+              "url": "assets/images/certifications/Notiqlik san'ati.pdf"
+            },
+            {
+              "image": "assets/images/certifications/critical thinking.png",
+              "title": "Critical Thinking",
+              "desc": "Osnova",
+              "tags": "",
+              "url": "assets/images/certifications/Tanqidiy fikrlash.pdf"
+            },
+            {
+              "image": "assets/uploads/1795330548450-muhammadaziz-xabibullayev-postgresql-to-.png",
+              "title": "PostgreSQL",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://praktikum.mohirdev.uz/certificate/verify?id=prac-3c4e4670"
+            },
+            {
+              "image": "assets/uploads/1795330220086-muhammadaziz-xabibullayev.png",
+              "title": "Mnemonics - Supermiya",
+              "desc": "Supermiya",
+              "tags": "",
+              "url": "assets/uploads/1795330220086-muhammadaziz-xabibullayev.pdf"
+            },
+            {
+              "image": "assets/uploads/1795330704101-muhammadaziz-xabibullayev-docker-haqida-.png",
+              "title": "Docker Basics",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://praktikum.mohirdev.uz/certificate/verify?id=prac-53aed7b9"
+            },
+            {
+              "image": "assets/uploads/1795330349301-muhammadaziz-xabibullayev-kali-linux-aso.png",
+              "title": "Kali Linux Basics",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://mohirdev.uz/certificate/verify/?id=prac-7829ed4b"
+            },
+            {
+              "image": "assets/uploads/1795330624983-muhammadaziz-xabibullayev-dasturlash-aso.png",
+              "title": "Python Basics",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://praktikum.mohirdev.uz/certificate/verify?id=prac-e925c019"
+            },
+            {
+              "image": "assets/uploads/1795330957909-muhammadaziz-xabibullayev-frontend-dastu.png",
+              "title": "Frontend Basics",
+              "desc": "Mohirdev",
+              "tags": "",
+              "url": "https://praktikum.mohirdev.uz/certificate/verify?id=prac-0f826208"
+            },
+            {
               "image": "assets/uploads/1795329620917-canva.png",
               "title": "Canva",
-              "desc": "Osnova - 2025",
+              "desc": "Osnova",
               "tags": "",
               "url": "assets/uploads/1795329620917-canva.pdf"
+            },
+            {
+              "image": "assets/images/certifications/promt-engineering.png",
+              "title": "Prompt Engineering",
+              "desc": "Osnova",
+              "tags": "",
+              "url": "assets/images/certifications/GPT_ основы промпт-инженерии.pdf"
             }
           ]
         }
