@@ -85,6 +85,9 @@
   const MONO = new Set(['github', 'x', 'notion', 'threads', 'medium', 'vercel', 'apple', 'tiktok', 'nextdotjs', 'express', 'githubcopilot', 'openai', 'unsplash']);
   const DOC_ICON = '<svg class="ico ico-doc" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.4 1.5h4.9l3.2 3.2v8.4c0 .8-.6 1.4-1.4 1.4H4.4c-.8 0-1.4-.6-1.4-1.4V2.9c0-.8.6-1.4 1.4-1.4z" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M9.2 1.6v3.2h3.2M5.3 7.6h5.4M5.3 9.9h5.4M5.3 12.1h3.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>';
 
+  // A PDF can't be shown inside <img>: such fields get a document placeholder that links to the file instead.
+  const isPdf = (v) => /\.pdf(\?.*)?$/i.test(String(v ?? '').trim());
+  const PDF_TILE = '<span class="pdf-tile" aria-hidden="true"><span class="pdf-tile-ico">📄</span><span class="pdf-tile-label">PDF</span></span>';
   const isImage = (v) => /^(https?:\/\/|blob:|\/|\.\/|assets\/)/i.test(v) || /\.(png|jpe?g|svg|gif|webp|avif|ico)(\?.*)?$/i.test(v);
 
   // Icon value can be: an emoji/text, "si:<simple-icons slug>", or an image path/URL.
@@ -152,7 +155,9 @@
       `<details class="b-toggle"${b.open ? ' open' : ''}><summary>${inline(b.title)}</summary><div class="toggle-body">${richText(b.text)}${renderBlocks(b.children)}</div></details>`,
     divider: () => `<hr class="b-divider">`,
     image: (b) =>
-      b.src
+      b.src && isPdf(b.src)
+        ? `<a class="b-pdf spot" ${linkAttrs(b.src)}>${PDF_TILE}<span>${inline(b.caption || 'Open PDF')}</span></a>`
+        : b.src
         ? `<figure class="b-image w-${esc(b.width || 'full')}"><img src="${src(b.src)}" alt="${esc(b.caption)}" loading="lazy" data-zoom>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
         : '',
     video: (b) =>
@@ -198,11 +203,12 @@
       `<div class="b-gallery cols-${esc(b.columns || 2)}">${visible(b.items)
         .map((i) => {
           const tags = splitTags(i.tags);
+          const pdf = isPdf(i.image);
           return wrap(
             'div',
-            i.url,
+            i.url || (pdf ? i.image : ''),
             'gallery-card spot',
-            `<span class="gallery-cover">${i.image ? `<img src="${src(i.image)}" alt="" loading="lazy">` : ''}</span><span class="gallery-body"><span class="gallery-title">${inline(i.title)}${draftMark(i.url)}</span>${i.desc ? `<span class="gallery-desc">${inline(i.desc)}</span>` : ''}${tags.length ? `<span class="gallery-tags">${tags.map((t) => `<span class="pill c-${hashColor(t)}">${esc(t)}</span>`).join('')}</span>` : ''}</span>`
+            `<span class="gallery-cover">${pdf ? PDF_TILE : i.image ? `<img src="${src(i.image)}" alt="" loading="lazy">` : ''}</span><span class="gallery-body"><span class="gallery-title">${inline(i.title)}${draftMark(i.url)}</span>${i.desc ? `<span class="gallery-desc">${inline(i.desc)}</span>` : ''}${tags.length ? `<span class="gallery-tags">${tags.map((t) => `<span class="pill c-${hashColor(t)}">${esc(t)}</span>`).join('')}</span>` : ''}</span>`
           );
         })
         .join('')}</div>`,

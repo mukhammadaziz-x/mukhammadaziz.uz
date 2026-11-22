@@ -465,6 +465,16 @@ a.link-card:hover .link-arrow { transform: translate(2px, -2px); color: var(--te
 .gallery-cover { display: block; aspect-ratio: 16 / 10; background: var(--bg-gray); overflow: hidden; border-bottom: 1px solid var(--border); }
 .gallery-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
 .gallery-card:hover .gallery-cover img { transform: scale(1.04); }
+
+/* PDF placeholder — a PDF can't be shown in <img>, so image fields holding one show this instead */
+.pdf-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 100%; min-height: 96px; color: var(--text-muted); }
+.pdf-tile-ico { font-size: 40px; line-height: 1; }
+.pdf-tile-label { font-size: 12px; font-weight: 600; letter-spacing: .08em; }
+.b-pdf { display: flex; align-items: center; gap: 14px; margin: 8px 0; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; color: inherit; text-decoration: none; }
+.b-pdf:hover { background: var(--hover); }
+.b-pdf .pdf-tile { width: 56px; height: 56px; min-height: 0; flex: none; background: var(--bg-gray); border-radius: 6px; }
+.b-pdf .pdf-tile-ico { font-size: 24px; }
+.b-pdf .pdf-tile-label { display: none; }
 .gallery-body { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px 12px; }
 .gallery-title { font-weight: 600; font-size: 14.5px; }
 .gallery-desc { font-size: 13px; color: var(--text-muted); }

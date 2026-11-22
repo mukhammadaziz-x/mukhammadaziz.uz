@@ -564,6 +564,35 @@
     }
   }
 
+  /* pdf-thumb:start */
+  // Renders the first page of a PDF to a PNG blob in the browser (pdf.js from cdnjs, loaded on first use).
+  // Browsers can't show a PDF inside <img>, so PDFs uploaded into image fields get this preview instead.
+  const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/';
+  let pdfjsLib = null;
+  async function pdfToPng(file, maxWidth = 1400) {
+    if (!pdfjsLib) {
+      pdfjsLib = await import(PDFJS + 'pdf.min.mjs');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS + 'pdf.worker.min.mjs';
+    }
+    const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await file.arrayBuffer()) }).promise;
+    try {
+      const page = await pdf.getPage(1);
+      const base = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: Math.min(3, maxWidth / base.width) });
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(viewport.width);
+      canvas.height = Math.round(viewport.height);
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; // transparent PDF backgrounds would turn black in some viewers
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      return await new Promise((ok, fail) => canvas.toBlob((b) => (b ? ok(b) : fail(new Error('Could not render the PDF'))), 'image/png'));
+    } finally {
+      pdf.destroy();
+    }
+  }
+  /* pdf-thumb:end */
+
   function upload(path) {
     const input = document.createElement('input');
     input.type = 'file';
@@ -573,16 +602,37 @@
       if (!file) return;
       if (file.size > 5 * 1024 * 1024) return toast('File is larger than 5 MB — please compress it first.', 'err');
       const ext = (file.name.match(/\.[a-z0-9]+$/i) || [''])[0].toLowerCase();
-      const name = `${Date.now()}-${file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'file'}${ext}`;
-      const rel = 'assets/uploads/' + name;
+      const base = `${Date.now()}-${file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'file'}`;
+      const name = base + ext;
+      let rel = 'assets/uploads/' + name;
       try {
         setStatus('busy', 'Uploading…');
         await gh.putFile(rel, b64encodeBytes(new Uint8Array(await file.arrayBuffer())), `Upload ${name} via Studio`);
         overrides[rel] = URL.createObjectURL(file);
+        let note = '';
+        if (ext === '.pdf') {
+          // Show the PDF's first page as the picture; the card itself links to the PDF.
+          const pdfRel = rel;
+          try {
+            setStatus('busy', 'Making a preview of the PDF…');
+            const png = await pdfToPng(file);
+            const pngRel = `assets/uploads/${base}.png`;
+            await gh.putFile(pngRel, b64encodeBytes(new Uint8Array(await png.arrayBuffer())), `Upload ${base}.png (PDF preview) via Studio`);
+            overrides[pngRel] = URL.createObjectURL(png);
+            rel = pngRel;
+            // Gallery / card items have a "url" field next to the image: fill it with the PDF if it's empty.
+            const owner = getAt(path.replace(/\.[^.]+$/, ''));
+            if (owner && typeof owner === 'object' && 'url' in owner && !/\.url$/.test(path) && !String(owner.url || '').trim()) owner.url = pdfRel;
+            note = ' — the first page is used as the picture, the card opens the PDF';
+          } catch (e) {
+            console.warn('PDF preview failed', e);
+            note = ' — could not make a preview, upload a PNG/JPG of it for the picture';
+          }
+        }
         // Covers can hold several images (a collage): uploads are appended there.
         const cur = String(getAt(path) || '').trim();
         setAt(path, /\.cover$/.test(path) && cur && cur !== 'none' ? `${cur}, ${rel}` : rel);
-        toast('Uploaded ' + name, 'ok');
+        toast('Uploaded ' + name + note, note.includes('could not') ? 'err' : 'ok');
         changed(true);
       } catch (e) {
         setStatus(dirty ? 'dirty' : 'ok', dirty ? 'Unpublished changes' : 'Up to date');
