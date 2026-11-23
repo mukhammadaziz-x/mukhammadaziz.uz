@@ -85,6 +85,16 @@
   const MONO = new Set(['github', 'x', 'notion', 'threads', 'medium', 'vercel', 'apple', 'tiktok', 'nextdotjs', 'express', 'githubcopilot', 'openai', 'unsplash']);
   const DOC_ICON = '<svg class="ico ico-doc" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.4 1.5h4.9l3.2 3.2v8.4c0 .8-.6 1.4-1.4 1.4H4.4c-.8 0-1.4-.6-1.4-1.4V2.9c0-.8.6-1.4 1.4-1.4z" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M9.2 1.6v3.2h3.2M5.3 7.6h5.4M5.3 9.9h5.4M5.3 12.1h3.4" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>';
 
+  // YouTube / Vimeo links → embed URL. Only the extracted id is used, so nothing else from the link reaches the page.
+  function videoEmbed(u) {
+    u = String(u ?? '').trim();
+    let m = u.match(/^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i);
+    if (m) return { url: `https://www.youtube-nocookie.com/embed/${m[1]}?rel=0`, vertical: /\/shorts\//i.test(u) };
+    m = u.match(/^https?:\/\/(?:www\.|player\.)?vimeo\.com\/(?:video\/)?(\d+)/i);
+    if (m) return { url: `https://player.vimeo.com/video/${m[1]}`, vertical: false };
+    return null;
+  }
+
   // A PDF can't be shown inside <img>: such fields get a document placeholder that links to the file instead.
   const isPdf = (v) => /\.pdf(\?.*)?$/i.test(String(v ?? '').trim());
   const PDF_TILE = '<span class="pdf-tile" aria-hidden="true"><span class="pdf-tile-ico">📄</span><span class="pdf-tile-label">PDF</span></span>';
@@ -160,10 +170,16 @@
         : b.src
         ? `<figure class="b-image w-${esc(b.width || 'full')}"><img src="${src(b.src)}" alt="${esc(b.caption)}" loading="lazy" data-zoom>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
         : '',
-    video: (b) =>
-      b.src
-        ? `<figure class="b-video w-${esc(b.width || 'full')}"><video src="${src(b.src)}"${b.poster ? ` poster="${src(b.poster)}"` : ''} controls playsinline preload="metadata"></video>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
-        : '',
+    video: (b) => {
+      const cap = b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : '';
+      const embed = videoEmbed(b.src);
+      if (embed) {
+        return `<figure class="b-video b-embed w-${esc(b.width || 'full')}${embed.vertical ? ' vertical' : ''}"><div class="embed-box"><iframe src="${esc(embed.url)}" title="${esc(b.caption || 'Video')}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>${cap}</figure>`;
+      }
+      return b.src
+        ? `<figure class="b-video w-${esc(b.width || 'full')}"><video src="${src(b.src)}"${b.poster ? ` poster="${src(b.poster)}"` : ''} controls playsinline preload="metadata"></video>${cap}</figure>`
+        : '';
+    },
     bookmark: (b) => {
       let host = '';
       try { host = new URL(b.url).hostname; } catch (e) {}

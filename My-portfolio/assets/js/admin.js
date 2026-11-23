@@ -12,6 +12,7 @@
     url: (k = 'url', label = 'Link') => ({ k, t: 'url', label, ph: '/page  ·  https://…  ·  /#section' }),
     icon: (k = 'icon', label = 'Icon') => ({ k, t: 'icon', label, ph: '🚀  ·  si:github  ·  assets/…png' }),
     image: (k, label = 'Image') => ({ k, t: 'image', label, ph: 'assets/images/…  or  https://…' }),
+    video: (k, label = 'Video') => ({ k, t: 'video', label, ph: '⬆ upload an MP4  ·  or paste a YouTube / Vimeo link' }),
     color: (k = 'color', label = 'Color') => ({ k, t: 'select', label, opts: COLORS }),
     select: (k, label, opts) => ({ k, t: 'select', label, opts }),
     check: (k, label) => ({ k, t: 'check', label }),
@@ -30,7 +31,7 @@
     callout: { label: 'Callout', glyph: '💡', desc: 'Box with icon — can hold other blocks', fields: [F.icon('icon', 'Icon (empty = none)'), F.color('color', 'Background'), F.area('text', 'Text', MD)], children: true },
     bookmark: { label: 'Bookmark', glyph: '🔖', desc: 'Link preview card', fields: [F.url('url', 'URL'), F.text('title', 'Title'), F.text('desc', 'Description'), F.image('image', 'Preview image')] },
     image: { label: 'Image', glyph: '🖼', desc: 'Picture, click to zoom', fields: [F.image('src'), F.text('caption', 'Caption'), F.select('width', 'Width', ['full', 'medium', 'small'])] },
-    video: { label: 'Video', glyph: '🎬', desc: 'MP4 video with player controls', fields: [F.text('src', 'Video file', 'assets/videos/…mp4  or  https://…mp4'), F.image('poster', 'Poster image (shown before play)'), F.text('caption', 'Caption'), F.select('width', 'Width', ['full', 'medium', 'small'])] },
+    video: { label: 'Video', glyph: '🎬', desc: 'Upload an MP4 or paste a YouTube / Vimeo link', fields: [F.video('src', 'Video'), F.image('poster', 'Poster image (made automatically on upload)'), F.text('caption', 'Caption'), F.select('width', 'Width', ['full', 'medium', 'small'])] },
     quote: { label: 'Quote', glyph: '❝', desc: 'Quote or highlighted list', fields: [F.area('text', 'Quote', MD), F.text('author', 'Author')] },
     toggle: { label: 'Toggle', glyph: '▸', desc: 'Collapsible section', fields: [F.text('title', 'Title'), F.area('text', 'Hidden text', MD), F.check('open', 'Open by default')], children: true },
     bullets: { label: 'List', glyph: '•', desc: 'Bulleted or numbered list', fields: [F.area('text', 'Items', 'One item per line'), F.check('ordered', 'Numbered list')] },
@@ -344,7 +345,8 @@
 
   const thumb = (v, t) => {
     const first = String(v || '').split(',')[0].trim();
-    if (!first || first === 'none') return `<span class="muted">${t === 'image' ? '—' : '·'}</span>`;
+    if (!first || first === 'none') return `<span class="muted">${t === 'icon' ? '·' : '—'}</span>`;
+    if (t === 'video') return `<span class="ico a-thumb-ico ico-emoji">${/youtu\.?be|vimeo\.com/i.test(first) ? '▶️' : '🎬'}</span>`;
     return icon(overrides[first] || first, 'a-thumb-ico');
   };
 
@@ -367,9 +369,10 @@
         break;
       case 'icon':
       case 'image':
+      case 'video':
         input = `<div class="a-media"><span class="a-thumb" data-thumb="${p}" data-kind="${f.t}">${thumb(value, f.t)}</span>
           <input id="${id}" data-path="${p}" value="${esc(value)}"${ph}>
-          <button type="button" class="a-mini" data-act="upload" data-path="${p}" title="Upload image">⬆</button></div>`;
+          <button type="button" class="a-mini" data-act="upload" data-path="${p}" data-kind="${f.t}" title="Upload ${f.t === 'video' ? 'video' : 'image'}">⬆</button></div>`;
         break;
       case 'url':
         input = `<input id="${id}" data-path="${p}" value="${esc(value)}"${ph} list="page-urls" spellcheck="false">`;
@@ -592,6 +595,79 @@
     }
   }
   /* pdf-thumb:end */
+
+  /* video-poster:start */
+  // Grabs a frame from the first second of a video as a JPEG poster. Also proves the browser can play the file:
+  // formats it can't decode (e.g. iPhone HEVC .mov) are rejected here, before anything is uploaded.
+  async function videoPoster(file, maxWidth = 1280) {
+    const url = URL.createObjectURL(file);
+    const v = document.createElement('video');
+    v.muted = true;
+    v.playsInline = true;
+    v.preload = 'auto';
+    try {
+      await new Promise((ok, fail) => {
+        v.onloadeddata = ok;
+        v.onerror = () => fail(new Error('This video can’t be played in a browser — export it as MP4 (H.264) or WebM.'));
+        v.src = url;
+      });
+      const t = Math.min(1, (v.duration || 0) / 10); // not the very first frame, which is often black
+      if (t > 0) await new Promise((ok) => { v.onseeked = ok; v.currentTime = t; });
+      const scale = Math.min(1, maxWidth / v.videoWidth);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(v.videoWidth * scale);
+      canvas.height = Math.round(v.videoHeight * scale);
+      canvas.getContext('2d').drawImage(v, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise((ok, fail) => canvas.toBlob((b) => (b ? ok(b) : fail(new Error('Could not make a poster'))), 'image/jpeg', 0.85));
+      return { blob, width: v.videoWidth, height: v.videoHeight, duration: v.duration };
+    } finally {
+      v.removeAttribute('src');
+      v.load();
+      URL.revokeObjectURL(url);
+    }
+  }
+  /* video-poster:end */
+
+  const VIDEO_MAX_MB = 25;
+  function uploadVideo(path) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'video/mp4,video/webm,.mp4,.m4v,.webm,.mov';
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (!file) return;
+      if (file.size > VIDEO_MAX_MB * 1024 * 1024) {
+        return toast(`Video is ${(file.size / 1048576).toFixed(0)} MB — the limit is ${VIDEO_MAX_MB} MB. Compress it (e.g. HandBrake, 720p) or upload it to YouTube and paste the link instead.`, 'err');
+      }
+      const ext = /\.webm$/i.test(file.name) ? '.webm' : '.mp4';
+      const base = `${Date.now()}-${file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'video'}`;
+      const rel = `assets/uploads/${base}${ext}`;
+      try {
+        setStatus('busy', 'Checking the video…');
+        const poster = await videoPoster(file);
+        setStatus('busy', `Uploading video (${(file.size / 1048576).toFixed(1)} MB)…`);
+        await gh.putFile(rel, b64encodeBytes(new Uint8Array(await file.arrayBuffer())), `Upload ${base}${ext} via Studio`);
+        overrides[rel] = URL.createObjectURL(file);
+        setAt(path, rel);
+        // Fill the poster next to the video field if it's empty.
+        const owner = getAt(path.replace(/\.[^.]+$/, ''));
+        if (owner && typeof owner === 'object' && !String(owner.poster || '').trim()) {
+          const posterRel = `assets/uploads/${base}-poster.jpg`;
+          await gh.putFile(posterRel, b64encodeBytes(new Uint8Array(await poster.blob.arrayBuffer())), `Upload ${base}-poster.jpg (video poster) via Studio`);
+          overrides[posterRel] = URL.createObjectURL(poster.blob);
+          owner.poster = posterRel;
+        }
+        // Portrait (phone) videos look better narrower.
+        if (owner && owner.type === 'video' && poster.height > poster.width && (!owner.width || owner.width === 'full')) owner.width = 'medium';
+        toast(`Uploaded ${base}${ext} — poster made from the first second`, 'ok');
+        changed(true);
+      } catch (e) {
+        setStatus(dirty ? 'dirty' : 'ok', dirty ? 'Unpublished changes' : 'Up to date');
+        toast(e.message, 'err');
+      }
+    };
+    input.click();
+  }
 
   function upload(path) {
     const input = document.createElement('input');
@@ -930,7 +1006,8 @@
         break;
       }
       case 'upload':
-        upload(btn.dataset.path);
+        if (btn.dataset.kind === 'video') uploadVideo(btn.dataset.path);
+        else upload(btn.dataset.path);
         break;
       case 'page-new':
         openPageModal(btn.dataset.parent !== undefined ? btn.dataset.parent : view.startsWith('page:') ? view.slice(5) : '');

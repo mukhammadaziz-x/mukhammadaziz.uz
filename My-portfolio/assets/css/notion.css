@@ -332,6 +332,10 @@ mark { background: var(--mark); color: inherit; padding: 0 2px; border-radius: 3
 .b-video.w-medium { max-width: 70%; margin-left: 0; }
 .b-video.w-small { max-width: 45%; margin-left: 0; }
 .b-video figcaption { font-size: 14px; color: var(--text-muted); padding: 6px 2px 0; }
+/* YouTube / Vimeo embeds: 16:9, or 9:16 for Shorts (capped in height like portrait uploads) */
+.b-embed .embed-box { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #000; }
+.b-embed.vertical .embed-box { aspect-ratio: 9 / 16; width: min(100%, calc(80vh * 9 / 16)); margin: 0 auto; }
+.b-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .zoom {
   position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 3vmin;
   background: rgba(10, 10, 10, 0); cursor: zoom-out; transition: background-color .2s;
