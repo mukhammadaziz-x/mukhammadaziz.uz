@@ -4,12 +4,11 @@ Personal portfolio site. The site lives in `My-portfolio/`; Netlify builds it wi
 
 ## Git workflow
 
-- **Commit and push the changes yourself when the work is done.** The owner does not want to run git commands.
-- **Do not `git pull` before every change.** Just commit and `git push`.
-- **Only when the push is rejected** (`fetch first` / non-fast-forward): `git pull --rebase`, then push again.
-  This happens because the admin panel (Studio) commits `My-portfolio/data/content.json` and uploads straight to GitHub.
-- **On a `content.json` conflict, never drop the owner's Studio edits.** Keep the remote version and re-apply your own change on top of it.
-- Commit messages say what changed (not "updated").
+- **Never commit or push.** The owner commits and pushes himself (2026-11-23). Only edit files and say which files changed.
+- **Do not `git pull` either.** No git command changes the repository or its history.
+- Read-only git commands are allowed for looking around: `status`, `diff`, `log`, `show`.
+- Studio commits `My-portfolio/data/content.json` and uploads straight to GitHub.
+  A local `content.json` can therefore be behind. Studio's Publish runs a three-way merge, so nothing is lost when both sides change it.
 
 ## Content
 
