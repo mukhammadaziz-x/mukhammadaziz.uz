@@ -503,11 +503,23 @@
     if (e.origin !== location.origin || !e.data || !content) return;
     if (e.data.type === 'nz-ready') pushPreview();
     // Clicking a page link inside the preview opens that page in the editor too.
-    if (e.data.type === 'nz-navigate' && content.pages.some((p) => (p.slug || '') === e.data.slug)) {
-      view = 'page:' + e.data.slug;
+    if (e.data.type !== 'nz-navigate') return;
+    const slug = String(e.data.slug || '');
+    if (content.pages.some((p) => (p.slug || '') === slug)) {
+      view = 'page:' + slug;
       collapsed.clear();
       renderEditor();
       $('#editor').scrollTop = 0;
+    } else if (/^[a-z0-9][a-z0-9-]*(\/[a-z0-9][a-z0-9-]*)*$/.test(slug) && !RESERVED.includes(slug.split('/')[0])) {
+      // A link to a page that doesn't exist yet (e.g. a new project card): offer to create it right there.
+      if (!confirm(`/${slug} doesn't exist yet. Create this page now?`)) return;
+      const cut = slug.lastIndexOf('/');
+      const parent = cut > 0 && content.pages.some((p) => p.slug === slug.slice(0, cut)) ? slug.slice(0, cut) : '';
+      openPageModal(parent);
+      const seg = parent ? slug.slice(cut + 1) : slug;
+      pageForm.elements.slug.value = seg;
+      slugTouched = true;
+      pageForm.elements.title.value = seg.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     }
   });
 
@@ -801,15 +813,75 @@
     if (!seg) return toast('Enter a URL for the page.', 'err');
     if (content.pages.some((p) => p.slug === slug)) return toast(`/${slug} already exists.`, 'err');
     if (RESERVED.includes(slug.split('/')[0])) return toast(`/${slug} is reserved.`, 'err');
-    const pg = { slug, title: v.title.trim(), icon: '📄', cover: '', description: '', draft: !!v.draft, fullWidth: !!v.fullWidth, blocks: [{ type: 'text', text: '' }] };
+    const isProject = v.parent === PROJECTS_SLUG;
+    const pg = {
+      slug,
+      title: v.title.trim(),
+      icon: isProject ? '🚀' : '📄',
+      cover: '',
+      description: '',
+      draft: !!v.draft,
+      fullWidth: !!v.fullWidth,
+      blocks: isProject ? projectTemplate() : [{ type: 'text', text: '' }],
+    };
     content.pages.push(pg);
     Object.defineProperty(pg, '__new', { value: true, configurable: true }); // not serialized
+    const carded = isProject && addProjectCard(pg);
     pageModal.hidden = true;
     view = 'page:' + slug;
     collapsed.clear();
     changed(true);
-    toast(`Created /${slug}. Link to it from another page with a “Page links” block.`, 'ok');
+    toast(
+      isProject
+        ? `Created /${slug} from the project template${carded ? ' and added its card to Projects' : ''} — replace the sample texts.`
+        : `Created /${slug}. Link to it from another page with a “Page links” block.`,
+      'ok'
+    );
   });
+
+  // A subpage of /projects starts as a full case study: the sections every project page uses, with sample
+  // texts to overwrite. Unneeded blocks are deleted with ✕.
+  const PROJECTS_SLUG = 'projects';
+  const projectTemplate = () => [
+    { type: 'callout', icon: '📌', color: 'gray', text: '**Role:** Software Engineer\n**When:** 2026\n**Stack:** Python, FastAPI, PostgreSQL' },
+    { type: 'text', text: 'What the project is, who uses it and which problem it solves — two or three sentences.\n\nThen what you built and the hardest part of it.' },
+    { type: 'h1', text: 'Stack' },
+    { type: 'badges', items: [{ label: 'Python', color: 'blue', url: '' }, { label: 'PostgreSQL', color: 'blue', url: '' }, { label: 'Docker', color: 'blue', url: '' }] },
+    { type: 'h1', text: 'What I built' },
+    {
+      type: 'cards',
+      columns: '2',
+      items: [
+        { icon: '⚙️', title: 'Main feature', desc: 'What it does for the user.', url: '' },
+        { icon: '🛂', title: 'Admin tools', desc: 'What the admin can see and do.', url: '' },
+      ],
+    },
+    { type: 'h1', text: 'Problems and how I solved them' },
+    { type: 'toggle', open: true, title: 'The hardest problem', text: '**Problem.** What went wrong or what was hard.\n\n**Solution.** What you built, and the result (a number if you have one).' },
+    { type: 'h1', text: 'In numbers' },
+    {
+      type: 'cards',
+      columns: '3',
+      items: [
+        { icon: '🎯', title: '0 errors', desc: 'What the number measures.', url: '' },
+        { icon: '⚡', title: '< 1 s', desc: 'What the number measures.', url: '' },
+        { icon: '🧪', title: '100+ tests', desc: 'What the number measures.', url: '' },
+      ],
+    },
+    { type: 'video', src: '', poster: '', caption: '', width: 'full' },
+    { type: 'button', icon: '📬', label: 'Want something like this? Let’s talk', url: '/contact' },
+  ];
+  // Adds a card for a new project to the first gallery on /projects (unless one already links to it).
+  function addProjectCard(pg) {
+    const list = content.pages.find((p) => p.slug === PROJECTS_SLUG);
+    const gallery = list && (list.blocks || []).find((b) => b.type === 'gallery');
+    if (!gallery) return false;
+    gallery.items = gallery.items || [];
+    const url = '/' + pg.slug;
+    if (gallery.items.some((i) => (i.url || '').replace(/\/+$/, '') === url)) return false;
+    gallery.items.push({ image: '', title: pg.title, desc: '', tags: '', url });
+    return true;
+  }
 
   // Rename a page: its subpages move along and every link to it is updated.
   function renamePage(from, to) {

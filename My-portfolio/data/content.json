@@ -922,6 +922,13 @@
               "url": "/projects/union-paper"
             },
             {
+              "image": "assets/uploads/1795420010732-mervanevchargerlogo.jpg",
+              "title": "EV Charger Bot",
+              "desc": "Telegram bot for an EV charging spot: reads the meter from photos, bills a prepaid balance, checks payment screenshots.",
+              "tags": "Backend, Bot, AI",
+              "url": "/projects/ev-charger-bot"
+            },
+            {
               "image": "assets/images/project-1.png",
               "title": "Felix Zoo",
               "desc": "Improved UI/UX and made the whole platform fully responsive.",
@@ -941,13 +948,6 @@
               "desc": "Web development project.",
               "tags": "Web development",
               "url": ""
-            },
-            {
-              "image": "assets/uploads/1795420010732-mervanevchargerlogo.jpg",
-              "title": "EV Charger Bot",
-              "desc": "",
-              "tags": "",
-              "url": "/projects/ev-charger-bot"
             }
           ]
         },
@@ -1304,6 +1304,216 @@
           "type": "button",
           "icon": "📬",
           "label": "Want something like this? Let's talk",
+          "url": "/contact"
+        }
+      ]
+    },
+    {
+      "slug": "projects/ev-charger-bot",
+      "title": "EV Charger Bot",
+      "icon": "assets/uploads/1795420010732-mervanevchargerlogo.jpg",
+      "cover": "",
+      "description": "EV Charger Bot — a Telegram bot that bills an EV charging spot from meter photos, built by Muhammadaziz Xabibullayev in 2026.",
+      "blocks": [
+        {
+          "type": "callout",
+          "icon": "📌",
+          "color": "gray",
+          "text": "**Role:** Software Engineer\n**When:** Sep — Nov 2026\n**Client:** Mervan EV Charger\n**Type:** Telegram bot · AI vision · billing"
+        },
+        {
+          "type": "callout",
+          "icon": "🔒",
+          "color": "blue",
+          "text": "This bot runs for a private charging spot, so it is not open to the public. Everything described here is in production."
+        },
+        {
+          "type": "text",
+          "text": "A Telegram bot that runs billing for an electric-car charging spot — no website, no app. The client photographs the electricity meter before and after charging; the bot reads both numbers with a vision model, works out the kWh and takes the money from the client's prepaid balance. Top-ups are bank transfers proven by a screenshot of the payment app, which the bot reads and an admin confirms with one press.\n\nThe hard part is trust: a misread digit is someone's money. So the model never decides alone — every reading is checked by independent reads and by rules in code, and the money moves in one atomic, auditable step."
+        },
+        {
+          "type": "h1",
+          "text": "Stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "aiogram 3",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SQLAlchemy (async)",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Alembic",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "Pydantic v2",
+              "color": "pink",
+              "url": ""
+            },
+            {
+              "label": "Redis",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Gemini Vision",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "Pillow + NumPy",
+              "color": "yellow",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "nginx",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "pytest",
+              "color": "orange",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "What I built"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "📸",
+              "title": "Meter reading",
+              "desc": "Photo before and after charging. Two independent reads must agree digit for digit; a third model breaks a tie.",
+              "url": ""
+            },
+            {
+              "icon": "🧾",
+              "title": "Payment screenshots",
+              "desc": "Reads Click, Payme, Uzum and other bank apps — amount, status, recipient. An admin confirms with one press.",
+              "url": ""
+            },
+            {
+              "icon": "💰",
+              "title": "Prepaid balance",
+              "desc": "Append-only ledger: every charge, top-up and refund is a row, and the balance always equals their sum.",
+              "url": ""
+            },
+            {
+              "icon": "🛂",
+              "title": "Admin tools",
+              "desc": "/pending, /status, /settings — top-ups to confirm, disputed sessions, today's and this month's numbers.",
+              "url": ""
+            },
+            {
+              "icon": "⚙️",
+              "title": "Worker & queues",
+              "desc": "Vision calls and money settlement run on separate Redis queues, so a slow model never blocks a payment.",
+              "url": ""
+            },
+            {
+              "icon": "🧯",
+              "title": "Clear retake reasons",
+              "desc": "A refused photo says why — blur, glare, a covered digit — so the client fixes the right thing.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Problems and how I solved them"
+        },
+        {
+          "type": "toggle",
+          "open": true,
+          "title": "A misread digit is someone's money",
+          "text": "**Problem.** Vision models sound sure even when they are wrong: one pass read a sharp 38 153,5 as «038153» — a phantom leading zero.\n\n**Solution.** The model returns six digits plus flags (blur, glare, a hidden digit), never a number. Two independent reads must agree digit for digit; when they don't, a different model reads a third time and two of three must match. The previous reading is never shown to the model — continuity (after ≥ before, within a session limit) is checked in code after the read. Result: 0 wrong numbers accepted on 36 real photos."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Money that always adds up",
+          "text": "**Problem.** A balance that drifts from its history can never be trusted again.\n\n**Solution.** The ledger is insert-only — a database trigger refuses UPDATE and DELETE; mistakes are fixed with an adjustment row. The balance is updated in the same transaction under a row lock, money and energy are integers (so'm, Wh), and the price is sealed when a session starts. A test asserts sum(transactions) == balance for every user, and a second admin press on a decided top-up does nothing."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Any bank app, one screenshot",
+          "text": "**Problem.** Clients pay from Click, Payme, Uzum, TBC and others — every receipt screen looks different.\n\n**Solution.** A phone-shaped photo goes to the payment reader: two different models read it, a third settles a disagreement, and the amount is parsed in code, never by the model. A failed transfer is refused with a reason; one payment proves one request (unique file and transaction number). 30 of 30 real screenshots read with 0 wrong amounts."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Fast on a free tier",
+          "text": "**Problem.** Free-tier vision APIs throttle and answer «busy» at random.\n\n**Solution.** The second read starts speculatively beside the first, busy answers are retried with backoff, and a fallback model takes over only when the daily quota is spent. Photo → decision: 3.9 s median, 7 s at p95; the bot's own part is 44 ms."
+        },
+        {
+          "type": "h1",
+          "text": "In numbers"
+        },
+        {
+          "type": "cards",
+          "columns": "3",
+          "items": [
+            {
+              "icon": "🎯",
+              "title": "0 wrong readings",
+              "desc": "Accepted on 36 real meter photos.",
+              "url": ""
+            },
+            {
+              "icon": "🧾",
+              "title": "30 / 30 payments",
+              "desc": "Real screenshots read with 0 wrong amounts.",
+              "url": ""
+            },
+            {
+              "icon": "⚡",
+              "title": "3.9 s",
+              "desc": "Median time from photo to receipt.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "How it ships"
+        },
+        {
+          "type": "text",
+          "text": "Two Docker setups — development and production. In production nginx terminates TLS and forwards Telegram's webhook to the bot; a migration step runs before the bot and the worker start. Nightly database and file backups, with a restore drill that rebuilds the database from a backup and checks the money ledger."
+        },
+        {
+          "type": "button",
+          "icon": "📬",
+          "label": "Want something like this? Let’s talk",
           "url": "/contact"
         }
       ]
