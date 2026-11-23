@@ -190,16 +190,24 @@ img.side-ico, img.head-ico { border-radius: 4px; object-fit: cover; }
 
 /* block type menu */
 .a-menu {
-  position: fixed; z-index: 100; width: 290px; max-height: 64vh; display: flex; flex-direction: column; padding: 6px;
+  position: fixed; z-index: 100; width: min(620px, calc(100vw - 16px)); max-height: 86vh; display: flex; flex-direction: column; padding: 6px;
   border: 1px solid var(--border-strong); border-radius: 10px; background: var(--card); box-shadow: var(--shadow-lg);
 }
+/* Every block type at a glance: three compact columns (description in the tooltip) */
+.a-menu-group { padding: 8px 8px 3px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+.a-menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 2px; }
+.a-menu-grid button { padding: 5px 8px; }
+.a-menu-grid button small { display: none; }
+.a-menu-grid .a-glyph { min-width: 26px; height: 26px; font-size: 13px; }
+@media (max-width: 680px) { .a-menu-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .a-menu-grid { grid-template-columns: 1fr; } }
 .a-menu[hidden] { display: none; }
 #menu-filter {
   flex: none; margin-bottom: 4px; padding: 7px 9px; border-radius: 6px; border: 1px solid var(--border-strong);
   background: var(--bg); color: var(--text); font: inherit; outline: none;
 }
 #menu-filter:focus { border-color: var(--accent); }
-#menu-list { overflow-y: auto; }
+#menu-list { overflow-y: auto; min-height: 0; scrollbar-width: thin; }
 .a-menu button {
   width: 100%; display: flex; align-items: center; gap: 10px; padding: 6px 8px;
   border: 0; border-radius: 6px; background: none; color: var(--text); font: inherit; text-align: left; cursor: pointer;

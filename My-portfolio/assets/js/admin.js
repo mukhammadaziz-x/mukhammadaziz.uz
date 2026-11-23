@@ -1101,13 +1101,28 @@
   let menuList = '';
   let menuAt = 0;
   let menuOpenedAt = 0;
+  // Every block type, grouped and laid out in two columns so the whole list is visible at once — in one long
+  // scrolling list (no visible scrollbar on Linux/macOS) the lower half, e.g. Button and Video, went unnoticed.
+  const MENU_GROUPS = [
+    ['Text', ['text', 'h1', 'h2', 'h3', 'bullets', 'quote', 'callout', 'toggle', 'divider']],
+    ['Media', ['image', 'video', 'gallery', 'bookmark']],
+    ['Links & buttons', ['button', 'links', 'linklist', 'inline', 'badges']],
+    ['Layout & data', ['columns', 'cards', 'database', 'timeline', 'progress', 'form']],
+  ];
   function renderMenu() {
     const q = menuFilter.value.trim().toLowerCase();
-    $('#menu-list').innerHTML =
-      Object.entries(SCHEMA)
-        .filter(([t, s]) => !q || (t + ' ' + s.label + ' ' + s.desc).toLowerCase().includes(q))
-        .map(([t, s]) => `<button data-act="block-add" data-type="${t}"><span class="a-glyph">${esc(s.glyph)}</span><span><b>${esc(s.label)}</b><small>${esc(s.desc)}</small></span></button>`)
-        .join('') || '<div class="muted small" style="padding:8px">No such block</div>';
+    const listed = new Set(MENU_GROUPS.flatMap(([, types]) => types));
+    const groups = [...MENU_GROUPS, ['Other', Object.keys(SCHEMA).filter((t) => !listed.has(t))]]; // a new type is never hidden
+    const html = groups
+      .map(([name, types]) => {
+        const buttons = types
+          .filter((t) => SCHEMA[t] && (!q || (t + ' ' + SCHEMA[t].label + ' ' + SCHEMA[t].desc).toLowerCase().includes(q)))
+          .map((t) => `<button data-act="block-add" data-type="${t}" title="${esc(SCHEMA[t].desc)}"><span class="a-glyph">${esc(SCHEMA[t].glyph)}</span><span><b>${esc(SCHEMA[t].label)}</b><small>${esc(SCHEMA[t].desc)}</small></span></button>`)
+          .join('');
+        return buttons ? `<div class="a-menu-group">${esc(name)}</div><div class="a-menu-grid">${buttons}</div>` : '';
+      })
+      .join('');
+    $('#menu-list').innerHTML = html || '<div class="muted small" style="padding:8px">No such block</div>';
   }
   function openMenu(btn, lp, at) {
     menuList = lp;
