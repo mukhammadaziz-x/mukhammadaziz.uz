@@ -1,11 +1,10 @@
-# The owner's computer pushes to `code`; Studio commits to `main`, and Netlify deploys `main`.
-# This brings every push to `code` into `main`, so `git push` never needs a `git pull` first.
+# The owner's computer pushes `code` to GitLab; GitLab CI (.gitlab-ci.yml) copies it to GitHub `code` and merges it into
+# `main`, where Studio commits and Netlify deploys. So this workflow only runs by hand (Actions → Run workflow), as a
+# backup. To have GitHub do the merge on every push again, add back:  push: { branches: [code] }
 # Details: My-portfolio/scripts/merge-code.js
 name: Merge code into main
 
 on:
-  push:
-    branches: [code]
   workflow_dispatch: {}
 
 permissions:

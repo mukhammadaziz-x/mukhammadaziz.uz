@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /*
  * Merges the `code` branch (pushed from the owner's computer) into `main` (where Studio commits and Netlify deploys).
- * Run by .github/workflows/merge-code.yml on every push to `code`; can also be run by hand in a clone.
+ * Run by GitLab CI (.gitlab-ci.yml) on every push to `code` on GitLab, with remote `github`; the GitHub workflow
+ * .github/workflows/merge-code.yml runs it by hand as a backup. Can also be run by hand in a clone.
  *
  * Why: Studio commits content.json and uploads straight to `main`. If the computer pushed to `main` as well, every
  * push after a Studio edit would be rejected until a `git pull`. With two branches nobody else writes `code`, so a
