@@ -929,6 +929,13 @@
               "url": "/projects/ev-charger-bot"
             },
             {
+              "image": "assets/images/project-ensys.svg",
+              "title": "EnSys Website",
+              "desc": "Trilingual corporate website with its own CMS and a Telegram bot for an ERP integration company.",
+              "tags": "Full stack, Backend, Frontend",
+              "url": "/projects/ensys-website"
+            },
+            {
               "image": "assets/images/project-1.png",
               "title": "Felix Zoo",
               "desc": "Improved UI/UX and made the whole platform fully responsive.",
@@ -1052,7 +1059,7 @@
       "title": "Union Paper",
       "icon": "📦",
       "cover": "assets/uploads/1795159915270-project-union-paper-site.jpg",
-      "description": "Union Paper — an internal logistics platform (import tracking, delivery, driver app) built by Muhammadaziz Xabibullayev in 2026.",
+      "description": "Union Paper — an internal logistics platform built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
         {
           "type": "callout",
@@ -1064,11 +1071,11 @@
           "type": "callout",
           "icon": "🔒",
           "color": "blue",
-          "text": "This is a **private internal system**, so its address and screens are not public. The link below is the company's public website; everything described here runs behind login."
+          "text": "An **internal system under NDA**: its screens, architecture and implementation details are not public. The link below is the company's public website."
         },
         {
           "type": "text",
-          "text": "Union Paper imports paper and board by rail and delivers it to clients across Tashkent. Before this project, incoming wagons were tracked by hand in Excel, and deliveries were coordinated by phone.\n\nI designed and built one platform that covers the whole chain: **wagon on the railway → warehouse → truck → client's door**. It is a website for the office, a Telegram bot for uploads and login, and a mobile app for drivers."
+          "text": "Union Paper and Board imports paper and board and delivers it to clients across Tashkent. I built an internal platform that connects the whole chain — from incoming shipments to delivery at the client's door — for the office, the warehouse and the drivers.\n\nIt replaced manual tracking in spreadsheets and coordination by phone with one shared, up-to-date picture."
         },
         {
           "type": "h1",
@@ -1098,13 +1105,8 @@
               "url": ""
             },
             {
-              "label": "Redis / Valkey",
+              "label": "Redis",
               "color": "red",
-              "url": ""
-            },
-            {
-              "label": "WebSocket",
-              "color": "gray",
               "url": ""
             },
             {
@@ -1128,28 +1130,13 @@
               "url": ""
             },
             {
-              "label": "Leaflet + OSRM",
-              "color": "green",
-              "url": ""
-            },
-            {
-              "label": "Bitrix24 API",
+              "label": "Docker",
               "color": "blue",
               "url": ""
             },
             {
               "label": "GitLab CI/CD",
               "color": "red",
-              "url": ""
-            },
-            {
-              "label": "Docker",
-              "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "nginx + systemd",
-              "color": "green",
               "url": ""
             }
           ]
@@ -1165,86 +1152,62 @@
             {
               "icon": "🚂",
               "title": "Import tracking",
-              "desc": "Two Excel reports become one live table: what is coming, from whom, where the wagon is now and when it arrives.",
+              "desc": "One live view of incoming shipments: what is coming, from whom and when it arrives.",
               "url": ""
             },
             {
               "icon": "🗺️",
-              "title": "Wagon map",
-              "desc": "Every wagon on a map, drawn along real railway lines, with stops coloured by how long it stood.",
+              "title": "Live map",
+              "desc": "Shipments and trucks on a map, so the office sees where things are without a phone call.",
               "url": ""
             },
             {
               "icon": "🚚",
               "title": "Delivery desk",
-              "desc": "CRM deals turn into trips: multi-stop routes, driver offers, a live fleet map and trip replay.",
+              "desc": "Plans deliveries, assigns drivers and follows every trip to the end.",
               "url": ""
             },
             {
               "icon": "📱",
               "title": "Driver app",
-              "desc": "Flutter app: accept a trip, statuses set by GPS geofences, works offline, payment ledger.",
+              "desc": "A mobile app for drivers: their trips, statuses and payments in one place.",
               "url": ""
             },
             {
               "icon": "🤖",
               "title": "Telegram bot",
-              "desc": "File uploads with admin approval, passwordless login, and group notifications per trip.",
+              "desc": "Notifications and quick actions for the team, right in Telegram.",
               "url": ""
             },
             {
               "icon": "🔐",
               "title": "Roles and audit",
-              "desc": "A role graph edited by the admin, 'log in as' for testing, and a journal of logins and status changes.",
+              "desc": "Everyone sees only their part of the system; important actions are recorded.",
               "url": ""
             }
           ]
         },
         {
           "type": "h1",
-          "text": "Problems and how I solved them"
+          "text": "Challenges"
         },
         {
           "type": "toggle",
           "open": true,
-          "title": "Two Excel files that never agree",
-          "text": "**Problem.** The shipment report writes a wagon as `291-11366/2`, the railway report as `29111366`, and the same file is often uploaded twice.\n\n**Solution.** One normalisation rule turns every spelling into an 8-digit key, so the two files join into a single row. Uploads are idempotent: a file is recognised by its SHA-256 hash and each line by its own hash, so re-uploading never creates duplicates. Fields edited by a person are marked as manual and are never overwritten by the next file."
+          "title": "Data from different sources",
+          "text": "Shipment data arrived in several reports with different formats. The platform brings it together into one consistent record, so nobody reconciles spreadsheets by hand any more."
         },
         {
           "type": "toggle",
           "open": false,
-          "title": "Search that stays instant",
-          "text": "**Problem.** `LIKE '%text%'` reads the whole table on every keystroke.\n\n**Solution.** I indexed every suffix of the reference tables (a suffix array) so that 'contains' becomes 'starts with' — which is a binary search. Measured at 20,000 rows it answers about 460× faster, with exactly the same results. A test fails the build if someone adds a plain substring scan."
+          "title": "Up-to-date statuses without extra work",
+          "text": "Drivers are busy on the road. The system keeps trip statuses current with as little input from them as possible, so the office always knows where a delivery is."
         },
         {
           "type": "toggle",
           "open": false,
-          "title": "A map that does not lie",
-          "text": "**Problem.** The railway report only names stations. Straight lines between them crossed half a continent, and a wrong coordinate drew a wagon travelling somewhere it had never been.\n\n**Solution.** Stations are geocoded and then checked against geography: a new point must be near the other stations of the same railway, or it is rejected. Routes follow real rails from OpenStreetMap, shared stretches are merged into one line, and a route belongs to one arrival — an empty return trip is never drawn as our delivery."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "Statuses nobody has to press",
-          "text": "**Problem.** Drivers forget to press buttons, so the office never knows where a truck really is.\n\n**Solution.** The app records GPS and the server decides: entering the warehouse territory, leaving it and arriving at the client set the status automatically through geofences. Points are queued on the phone and sent in batches, so a tunnel or a dead zone loses nothing. If a manual mark contradicts GPS, the app asks 'Are you sure?' and the answer is written to history."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "A trip is not an order",
-          "text": "**Problem.** One truck carries several orders, and one large order is split across several trucks — a single 'order status' could not describe that.\n\n**Solution.** I separated the model into deals, trips, stops and allocations. The deal's status is computed from its trips, the unload order is the route, and the page draws a loading plan of the truck body — first unload at the doors, loaded last."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "Money that always adds up",
-          "text": "**Problem.** Driver payments lived in notebooks, and the company's numbers and the drivers' numbers disagreed.\n\n**Solution.** A ledger: every delivered trip becomes a debt, every payment is allocated FIFO to the oldest debt, and the remainder becomes an advance. The driver sees the same numbers in the app that the cashier sees on the site."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "Login without passwords — and without the usual hole",
-          "text": "**Problem.** Staff should not manage passwords, but 'log in with a link' can be abused: someone sends you their link and you confirm their session.\n\n**Solution.** Login goes through the Telegram bot, which shows the device and address that asked and waits for 'Yes, it's me'. Refresh tokens rotate with reuse detection, and an open tab is closed the moment a user is blocked."
+          "title": "Numbers everyone agrees on",
+          "text": "Payments to drivers are tracked so that the office and each driver always see the same figures."
         },
         {
           "type": "h1",
@@ -1263,24 +1226,24 @@
             {
               "icon": "⚡",
               "title": "Under 50 ms",
-              "desc": "Typical API response on live data.",
+              "desc": "Typical response time of the platform.",
               "url": ""
             },
             {
               "icon": "🔎",
-              "title": "460× faster search",
-              "desc": "Suffix-array index instead of LIKE, measured on 20,000 rows.",
+              "title": "Instant search",
+              "desc": "Search stays instant as the data grows.",
               "url": ""
             }
           ]
         },
         {
           "type": "h1",
-          "text": "How it ships"
+          "text": "Delivery"
         },
         {
           "type": "text",
-          "text": "Every change goes through GitLab CI: tests, secret scanning, build, then an automatic deploy with a database backup, backward-compatible migrations, a health check and automatic rollback. Production runs as systemd services behind nginx on a shared company server, with nightly backups and a watchdog that reports to Telegram."
+          "text": "Every change is tested and deployed automatically through CI/CD, with backups and a safe way back if something goes wrong."
         },
         {
           "type": "bookmark",
@@ -1303,7 +1266,7 @@
         {
           "type": "button",
           "icon": "📬",
-          "label": "Want something like this? Let's talk",
+          "label": "Want something like this? Let’s talk",
           "url": "/contact"
         }
       ]
@@ -1313,7 +1276,7 @@
       "title": "EV Charger Bot",
       "icon": "🔌",
       "cover": "",
-      "description": "EV Charger Bot — a Telegram bot that bills an EV charging spot from meter photos, built by Muhammadaziz Xabibullayev in 2026.",
+      "description": "EV Charger Bot — a Telegram bot that bills an EV charging business from meter photos, built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
         {
           "type": "callout",
@@ -1325,11 +1288,11 @@
           "type": "callout",
           "icon": "🔒",
           "color": "blue",
-          "text": "This bot runs for a private charging spot, so it is not open to the public. Everything described here is in production."
+          "text": "A **private bot under NDA**: it is not open to the public, and implementation details are not shared."
         },
         {
           "type": "text",
-          "text": "A Telegram bot that runs billing for an electric-car charging spot — no website, no app. The client photographs the electricity meter before and after charging; the bot reads both numbers with a vision model, works out the kWh and takes the money from the client's prepaid balance. Top-ups are bank transfers proven by a screenshot of the payment app, which the bot reads and an admin confirms with one press.\n\nThe hard part is trust: a misread digit is someone's money. So the model never decides alone — every reading is checked by independent reads and by rules in code, and the money moves in one atomic, auditable step."
+          "text": "A Telegram bot that runs billing for an electric-car charging business — no website, no app. A client photographs the electricity meter before and after charging; the bot reads the numbers with AI, calculates the energy used and charges the client's prepaid balance. Top-ups are confirmed from a payment screenshot.\n\nAccuracy matters most here: every reading is someone's money, so the bot is built to refuse a doubtful photo rather than guess."
         },
         {
           "type": "h1",
@@ -1354,18 +1317,8 @@
               "url": ""
             },
             {
-              "label": "SQLAlchemy (async)",
+              "label": "SQLAlchemy",
               "color": "red",
-              "url": ""
-            },
-            {
-              "label": "Alembic",
-              "color": "gray",
-              "url": ""
-            },
-            {
-              "label": "Pydantic v2",
-              "color": "pink",
               "url": ""
             },
             {
@@ -1374,23 +1327,13 @@
               "url": ""
             },
             {
-              "label": "Gemini Vision",
+              "label": "Vision AI",
               "color": "purple",
-              "url": ""
-            },
-            {
-              "label": "Pillow + NumPy",
-              "color": "yellow",
               "url": ""
             },
             {
               "label": "Docker",
               "color": "blue",
-              "url": ""
-            },
-            {
-              "label": "nginx",
-              "color": "green",
               "url": ""
             },
             {
@@ -1411,68 +1354,62 @@
             {
               "icon": "📸",
               "title": "Meter reading",
-              "desc": "Photo before and after charging. Two independent reads must agree digit for digit; a third model breaks a tie.",
+              "desc": "Reads the meter from a photo — and asks for a better one when it isn't sure.",
               "url": ""
             },
             {
               "icon": "🧾",
               "title": "Payment screenshots",
-              "desc": "Reads Click, Payme, Uzum and other bank apps — amount, status, recipient. An admin confirms with one press.",
+              "desc": "Understands receipts from popular payment apps; an admin confirms a top-up with one press.",
               "url": ""
             },
             {
               "icon": "💰",
               "title": "Prepaid balance",
-              "desc": "Append-only ledger: every charge, top-up and refund is a row, and the balance always equals their sum.",
+              "desc": "Every charge, top-up and refund is recorded; the balance always matches the history.",
               "url": ""
             },
             {
               "icon": "🛂",
               "title": "Admin tools",
-              "desc": "/pending, /status, /settings — top-ups to confirm, disputed sessions, today's and this month's numbers.",
-              "url": ""
-            },
-            {
-              "icon": "⚙️",
-              "title": "Worker & queues",
-              "desc": "Vision calls and money settlement run on separate Redis queues, so a slow model never blocks a payment.",
+              "desc": "Pending top-ups, open sessions and daily figures in a few commands.",
               "url": ""
             },
             {
               "icon": "🧯",
-              "title": "Clear retake reasons",
-              "desc": "A refused photo says why — blur, glare, a covered digit — so the client fixes the right thing.",
+              "title": "Clear feedback",
+              "desc": "When a photo is refused, the client is told why and what to fix.",
+              "url": ""
+            },
+            {
+              "icon": "⚙️",
+              "title": "Reliable under load",
+              "desc": "A slow AI response never holds up payments or other clients.",
               "url": ""
             }
           ]
         },
         {
           "type": "h1",
-          "text": "Problems and how I solved them"
+          "text": "Challenges"
         },
         {
           "type": "toggle",
           "open": true,
-          "title": "A misread digit is someone's money",
-          "text": "**Problem.** Vision models sound sure even when they are wrong: one pass read a sharp 38 153,5 as «038153» — a phantom leading zero.\n\n**Solution.** The model returns six digits plus flags (blur, glare, a hidden digit), never a number. Two independent reads must agree digit for digit; when they don't, a different model reads a third time and two of three must match. The previous reading is never shown to the model — continuity (after ≥ before, within a session limit) is checked in code after the read. Result: 0 wrong numbers accepted on 36 real photos."
+          "title": "Accuracy over speed",
+          "text": "A misread digit is someone's money. The bot accepts only a reading it is sure of and asks for a retake otherwise — on real photos it never accepted a wrong number."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Many payment apps",
+          "text": "Clients pay from different banks and apps, each with its own receipt screen. The bot handles them all and flags anything unusual for the admin."
         },
         {
           "type": "toggle",
           "open": false,
           "title": "Money that always adds up",
-          "text": "**Problem.** A balance that drifts from its history can never be trusted again.\n\n**Solution.** The ledger is insert-only — a database trigger refuses UPDATE and DELETE; mistakes are fixed with an adjustment row. The balance is updated in the same transaction under a row lock, money and energy are integers (so'm, Wh), and the price is sealed when a session starts. A test asserts sum(transactions) == balance for every user, and a second admin press on a decided top-up does nothing."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "Any bank app, one screenshot",
-          "text": "**Problem.** Clients pay from Click, Payme, Uzum, TBC and others — every receipt screen looks different.\n\n**Solution.** A phone-shaped photo goes to the payment reader: two different models read it, a third settles a disagreement, and the amount is parsed in code, never by the model. A failed transfer is refused with a reason; one payment proves one request (unique file and transaction number). 30 of 30 real screenshots read with 0 wrong amounts."
-        },
-        {
-          "type": "toggle",
-          "open": false,
-          "title": "Fast on a free tier",
-          "text": "**Problem.** Free-tier vision APIs throttle and answer «busy» at random.\n\n**Solution.** The second read starts speculatively beside the first, busy answers are retried with backoff, and a fallback model takes over only when the daily quota is spent. Photo → decision: 3.9 s median, 7 s at p95; the bot's own part is 44 ms."
+          "text": "Balances, charges and refunds stay consistent even when several clients and admins act at the same time."
         },
         {
           "type": "h1",
@@ -1503,12 +1440,172 @@
           ]
         },
         {
-          "type": "h1",
-          "text": "How it ships"
+          "type": "button",
+          "icon": "📬",
+          "label": "Want something like this? Let’s talk",
+          "url": "/contact"
+        }
+      ]
+    },
+    {
+      "slug": "projects/ensys-website",
+      "title": "EnSys Website",
+      "icon": "🏢",
+      "cover": "",
+      "description": "EnSys Website — a trilingual corporate website with its own CMS and a Telegram bot, built by Muhammadaziz Xabibullayev in 2026.",
+      "blocks": [
+        {
+          "type": "callout",
+          "icon": "📌",
+          "color": "gray",
+          "text": "**Role:** Software Engineer\n**When:** 2026\n**Client:** EnSys — ERP integration and IT architecture\n**Type:** Corporate website · CMS · Telegram bot"
+        },
+        {
+          "type": "callout",
+          "icon": "🔒",
+          "color": "blue",
+          "text": "A **client project under NDA**: the code and implementation details are not public."
         },
         {
           "type": "text",
-          "text": "Two Docker setups — development and production. In production nginx terminates TLS and forwards Telegram's webhook to the bot; a migration step runs before the bot and the worker start. Nightly database and file backups, with a restore drill that rebuilds the database from a backup and checks the money ledger."
+          "text": "A corporate website for EnSys, an ERP integrator and IT-architecture company, in three languages — Uzbek, Russian and English. It comes with its own admin panel, so the team updates services, cases, articles and vacancies without a developer, and a Telegram bot for clients.\n\nThe goal: bring in clients, build trust and help with hiring — with fast pages that rank well in search."
+        },
+        {
+          "type": "h1",
+          "text": "Stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "FastAPI",
+              "color": "green",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "SQLAlchemy",
+              "color": "red",
+              "url": ""
+            },
+            {
+              "label": "Valkey",
+              "color": "purple",
+              "url": ""
+            },
+            {
+              "label": "Next.js",
+              "color": "gray",
+              "url": ""
+            },
+            {
+              "label": "React",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "TypeScript",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Tailwind CSS",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "aiogram",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "GitLab CI/CD",
+              "color": "red",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "What I built"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "🌐",
+              "title": "Trilingual website",
+              "desc": "Uzbek, Russian and English, with clean, search-friendly addresses for every page.",
+              "url": ""
+            },
+            {
+              "icon": "🛠️",
+              "title": "Admin panel (CMS)",
+              "desc": "The team edits services, cases, articles and vacancies themselves — no developer needed.",
+              "url": ""
+            },
+            {
+              "icon": "🤖",
+              "title": "Telegram bot",
+              "desc": "Clients browse services, book a consultation and get contacts right in Telegram.",
+              "url": ""
+            },
+            {
+              "icon": "📨",
+              "title": "Leads and careers",
+              "desc": "Contact requests and CVs reach the team at once, with spam protection on every form.",
+              "url": ""
+            },
+            {
+              "icon": "🔎",
+              "title": "Site search",
+              "desc": "Finds services, cases and articles in all three languages.",
+              "url": ""
+            },
+            {
+              "icon": "🚀",
+              "title": "CI/CD",
+              "desc": "Every change is checked, built and deployed automatically.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Challenges"
+        },
+        {
+          "type": "toggle",
+          "open": true,
+          "title": "Three languages, one source of truth",
+          "text": "Every page exists in Uzbek, Russian and English, but the content is managed in one place — so the versions never drift apart."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Fast pages that editors can update",
+          "text": "Pages load fast and rank well, yet an edit in the admin panel appears on the site within moments."
+        },
+        {
+          "type": "toggle",
+          "open": false,
+          "title": "Secure by default",
+          "text": "Admin access and every public form are protected against abuse from day one."
         },
         {
           "type": "button",
