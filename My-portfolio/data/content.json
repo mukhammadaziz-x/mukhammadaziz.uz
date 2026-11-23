@@ -1696,6 +1696,124 @@
           "success": "Thanks! Your message has been sent — I'll get back to you soon."
         }
       ]
+    },
+    {
+      "slug": "projects/salombek",
+      "title": "Salombek",
+      "icon": "🚀",
+      "cover": "",
+      "description": "",
+      "draft": true,
+      "fullWidth": false,
+      "blocks": [
+        {
+          "type": "callout",
+          "icon": "📌",
+          "color": "gray",
+          "text": "**Role:** Software Engineer\n**When:** 2026\n**Stack:** Python, FastAPI, PostgreSQL"
+        },
+        {
+          "type": "text",
+          "text": "What the project is, who uses it and which problem it solves — two or three sentences.\n\nThen what you built and the hardest part of it."
+        },
+        {
+          "type": "h1",
+          "text": "Stack"
+        },
+        {
+          "type": "badges",
+          "items": [
+            {
+              "label": "Python",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "PostgreSQL",
+              "color": "blue",
+              "url": ""
+            },
+            {
+              "label": "Docker",
+              "color": "blue",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "What I built"
+        },
+        {
+          "type": "cards",
+          "columns": "2",
+          "items": [
+            {
+              "icon": "⚙️",
+              "title": "Main feature",
+              "desc": "What it does for the user.",
+              "url": ""
+            },
+            {
+              "icon": "🛂",
+              "title": "Admin tools",
+              "desc": "What the admin can see and do.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "h1",
+          "text": "Problems and how I solved them"
+        },
+        {
+          "type": "toggle",
+          "open": true,
+          "title": "The hardest problem",
+          "text": "**Problem.** What went wrong or what was hard.\n\n**Solution.** What you built, and the result (a number if you have one)."
+        },
+        {
+          "type": "h1",
+          "text": "In numbers"
+        },
+        {
+          "type": "cards",
+          "columns": "3",
+          "items": [
+            {
+              "icon": "🎯",
+              "title": "0 errors",
+              "desc": "What the number measures.",
+              "url": ""
+            },
+            {
+              "icon": "⚡",
+              "title": "< 1 s",
+              "desc": "What the number measures.",
+              "url": ""
+            },
+            {
+              "icon": "🧪",
+              "title": "100+ tests",
+              "desc": "What the number measures.",
+              "url": ""
+            }
+          ]
+        },
+        {
+          "type": "video",
+          "src": "",
+          "poster": "",
+          "caption": "",
+          "width": "full"
+        },
+        {
+          "type": "button",
+          "icon": "📬",
+          "label": "Want something like this? Let’s talk",
+          "url": "/contact"
+        }
+      ]
     }
   ]
 }
