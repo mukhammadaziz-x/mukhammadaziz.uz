@@ -1,0 +1,33 @@
+# The owner's computer pushes to `code`; Studio commits to `main`, and Netlify deploys `main`.
+# This brings every push to `code` into `main`, so `git push` never needs a `git pull` first.
+# Details: My-portfolio/scripts/merge-code.js
+name: Merge code into main
+
+on:
+  push:
+    branches: [code]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: merge-code
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: code
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Merge code into main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node My-portfolio/scripts/merge-code.js
