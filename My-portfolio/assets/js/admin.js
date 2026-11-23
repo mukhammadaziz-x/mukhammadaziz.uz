@@ -177,37 +177,6 @@
     putFile(rel, b64, message, sha, c = session) {
       return gh.api('PUT', rel, { message, content: b64, branch: c.branch, ...(sha ? { sha } : {}) }, c);
     },
-    // Any other repo endpoint (Git Data API: refs, commits, blobs, trees).
-    async git(method, path, body, c = session) {
-      if (!c || !c.token) throw new Error('Not signed in.');
-      const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/${path}`, {
-        method,
-        cache: 'no-store',
-        headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${c.token}`, 'X-GitHub-Api-Version': '2022-11-28', ...(body ? { 'Content-Type': 'application/json' } : {}) },
-        body: body ? JSON.stringify(body) : undefined,
-      });
-      const data = await r.json().catch(() => ({}));
-      if (r.status === 401) throw new Error('GitHub rejected the token (expired or revoked). Update it in 👤 Account.');
-      if (!r.ok) throw Object.assign(new Error(`GitHub ${r.status}: ${data.message || r.statusText}`), { status: r.status });
-      return data;
-    },
-    // Big files (videos): the Contents API is unreliable past a few tens of MB, the Git Data API takes blobs up to 100 MB.
-    // blob → tree on top of the branch head → commit → move the branch. Retries if someone else committed meanwhile.
-    async putLargeFile(rel, b64, message, c = session) {
-      const head = `heads/${c.branch.split('/').map(encodeURIComponent).join('/')}`;
-      const blob = await gh.git('POST', 'git/blobs', { content: b64, encoding: 'base64' }, c);
-      for (let attempt = 1; ; attempt++) {
-        const ref = await gh.git('GET', `git/ref/${head}`, null, c);
-        const parent = await gh.git('GET', `git/commits/${ref.object.sha}`, null, c);
-        const tree = await gh.git('POST', 'git/trees', { base_tree: parent.tree.sha, tree: [{ path: gh.repoPath(rel, c), mode: '100644', type: 'blob', sha: blob.sha }] }, c);
-        const commit = await gh.git('POST', 'git/commits', { message, tree: tree.sha, parents: [ref.object.sha] }, c);
-        try {
-          return await gh.git('PATCH', `git/refs/${head}`, { sha: commit.sha, force: false }, c);
-        } catch (e) {
-          if (e.status !== 422 || attempt >= 3) throw e; // 422 = branch moved on; rebuild on the new head
-        }
-      }
-    },
   };
 
   /* ================= gate: login & first-time setup ================= */
@@ -659,7 +628,46 @@
   }
   /* video-poster:end */
 
-  const VIDEO_MAX_MB = 90; // GitHub's hard limit is 100 MB per file
+  /* video-compress:start */
+  // GitHub's API refuses big uploads ("input too large"), so large videos are re-encoded in the browser first
+  // (Mediabunny + WebCodecs, hardware-accelerated where available): H.264 MP4, short side ≤ 720 px, with the
+  // bitrate chosen so the result lands under targetBytes. Audio is copied as-is when possible (Chrome on Linux
+  // can't encode AAC), otherwise re-encoded. Returns { blob, audioLost }.
+  const MEDIABUNNY = 'https://cdn.jsdelivr.net/npm/mediabunny@1.65.2/dist/bundles/mediabunny.min.mjs';
+  let mediabunny = null;
+  async function compressVideo(file, targetBytes, onProgress) {
+    if (!mediabunny) mediabunny = await import(MEDIABUNNY);
+    const { Input, Output, BlobSource, BufferTarget, Mp4OutputFormat, Conversion, Quality, ALL_FORMATS } = mediabunny;
+    const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
+    const duration = await input.computeDuration();
+    if (!(duration > 0)) throw new Error('Could not read the length of this video.');
+    const audioBps = 192000; // budget for a copied audio track
+    const videoBps = Math.min(2500000, Math.floor((targetBytes * 8 * 0.9) / duration) - audioBps); // 10% headroom
+    if (videoBps < 350000) {
+      throw new Error(`This video is too long (${Math.round(duration / 60)} min) to keep good quality on the site — upload it to YouTube and paste the link instead.`);
+    }
+    const output = new Output({ format: new Mp4OutputFormat({ fastStart: 'in-memory' }), target: new BufferTarget() });
+    const conversion = await Conversion.init({
+      input,
+      output,
+      video: (track) => {
+        const w = track.displayWidth;
+        const h = track.displayHeight;
+        return { ...(w <= h ? { width: Math.min(w, 720) } : { height: Math.min(h, 720) }), codec: 'avc', quality: new Quality({ bitrate: videoBps }) };
+      },
+    });
+    if (!conversion.isValid) {
+      throw new Error(`This browser can’t convert this video (${conversion.discardedTracks.map((t) => t.reason).join(', ')}). Try Chrome, or upload it to YouTube and paste the link.`);
+    }
+    const audioLost = conversion.discardedTracks.some((d) => d.track.isAudioTrack());
+    if (onProgress) conversion.onProgress = onProgress;
+    await conversion.execute();
+    return { blob: new Blob([output.target.buffer], { type: 'video/mp4' }), audioLost };
+  }
+  /* video-compress:end */
+
+  const VIDEO_UPLOAD_MB = 15; // bigger files are compressed first — GitHub's API rejects large uploads
+  const VIDEO_INPUT_MAX_MB = 500;
   function uploadVideo(path) {
     const input = document.createElement('input');
     input.type = 'file';
@@ -667,18 +675,29 @@
     input.onchange = async () => {
       const file = input.files[0];
       if (!file) return;
-      if (file.size > VIDEO_MAX_MB * 1024 * 1024) {
-        return toast(`Video is ${(file.size / 1048576).toFixed(0)} MB — the limit is ${VIDEO_MAX_MB} MB. Compress it (e.g. HandBrake, 720p) or upload it to YouTube and paste the link instead.`, 'err');
+      const MB = 1048576;
+      if (file.size > VIDEO_INPUT_MAX_MB * MB) {
+        return toast(`Video is ${(file.size / MB).toFixed(0)} MB — too big to process here. Upload it to YouTube and paste the link instead.`, 'err');
       }
-      const ext = /\.webm$/i.test(file.name) ? '.webm' : '.mp4';
       const base = `${Date.now()}-${file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'video'}`;
-      const rel = `assets/uploads/${base}${ext}`;
+      let ext = /\.webm$/i.test(file.name) ? '.webm' : '.mp4';
       try {
         setStatus('busy', 'Checking the video…');
         const poster = await videoPoster(file);
-        setStatus('busy', `Uploading video (${(file.size / 1048576).toFixed(1)} MB)…`);
-        await gh.putLargeFile(rel, b64encodeBytes(new Uint8Array(await file.arrayBuffer())), `Upload ${base}${ext} via Studio`);
-        overrides[rel] = URL.createObjectURL(file);
+        let data = file;
+        let note = '';
+        if (file.size > VIDEO_UPLOAD_MB * MB) {
+          setStatus('busy', 'Compressing video… 0%');
+          const res = await compressVideo(file, VIDEO_UPLOAD_MB * MB, (p) => setStatus('busy', `Compressing video… ${Math.round(p * 100)}%`));
+          data = res.blob;
+          ext = '.mp4';
+          note = ` — compressed ${(file.size / MB).toFixed(0)} → ${(data.size / MB).toFixed(1)} MB` + (res.audioLost ? ' (this browser could not keep the sound — use YouTube if it matters)' : '');
+          if (data.size > VIDEO_UPLOAD_MB * 1.15 * MB) throw new Error(`Even compressed the video is ${(data.size / MB).toFixed(1)} MB — upload it to YouTube and paste the link instead.`);
+        }
+        const rel = `assets/uploads/${base}${ext}`;
+        setStatus('busy', `Uploading video (${(data.size / MB).toFixed(1)} MB)…`);
+        await gh.putFile(rel, b64encodeBytes(new Uint8Array(await data.arrayBuffer())), `Upload ${base}${ext} via Studio`);
+        overrides[rel] = URL.createObjectURL(data);
         setAt(path, rel);
         // Fill the poster next to the video field if it's empty.
         const owner = getAt(path.replace(/\.[^.]+$/, ''));
@@ -690,7 +709,7 @@
         }
         // Portrait (phone) videos look better narrower.
         if (owner && owner.type === 'video' && poster.height > poster.width && (!owner.width || owner.width === 'full')) owner.width = 'medium';
-        toast(`Uploaded ${base}${ext} — poster made from the first second`, 'ok');
+        toast(`Uploaded ${base}${ext}${note}`, note.includes('could not') ? 'err' : 'ok');
         changed(true);
       } catch (e) {
         setStatus(dirty ? 'dirty' : 'ok', dirty ? 'Unpublished changes' : 'Up to date');
