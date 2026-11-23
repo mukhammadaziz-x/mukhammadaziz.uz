@@ -1,0 +1,32 @@
+# The owner's computer pushes `code` to GitLab; GitLab CI (.gitlab-ci.yml) copies it to GitHub `code` and merges it into
+# `main`, where Studio commits and Netlify deploys. So this workflow only runs by hand (Actions → Run workflow), as a
+# backup. To have GitHub do the merge on every push again, add back:  push: { branches: [code] }
+# Details: My-portfolio/scripts/merge-code.js
+name: Merge code into main
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: merge-code
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: code
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Merge code into main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node My-portfolio/scripts/merge-code.js

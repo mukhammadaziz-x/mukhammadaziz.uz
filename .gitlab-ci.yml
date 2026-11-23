@@ -1,0 +1,20 @@
+# The owner's computer pushes branch `code` to GitLab. Studio commits to GitHub `main`, and Netlify deploys GitHub `main`.
+# On every push to `code` this job:
+#   1. copies `code` to GitHub `code` (nobody else writes it), then
+#   2. runs My-portfolio/scripts/merge-code.js against GitHub, which merges `code` into `main`
+#      (content.json as JSON, the same merge Studio uses), builds the site and pushes `main`.
+# Needs the CI/CD variable GITHUB_TOKEN: a GitHub fine-grained token for this repository with "Contents: Read and write".
+merge-code:
+  image: node:20
+  rules:
+    - if: $CI_COMMIT_BRANCH == "code"
+  resource_group: merge-code
+  variables:
+    GIT_DEPTH: 0 # the merge needs full history
+  script:
+    - '[ -n "$GITHUB_TOKEN" ] || { echo "GITHUB_TOKEN is not set: GitLab → Settings → CI/CD → Variables"; exit 1; }'
+    - git config user.name "gitlab-ci"
+    - git config user.email "gitlab-ci@users.noreply.gitlab.com"
+    - git remote add github "https://x-access-token:${GITHUB_TOKEN}@github.com/mukhammadaziz-x/mukhammadaziz.uz.git"
+    - git push --force github "$CI_COMMIT_SHA:refs/heads/code"
+    - node My-portfolio/scripts/merge-code.js github

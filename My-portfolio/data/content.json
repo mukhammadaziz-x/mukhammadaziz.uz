@@ -1572,6 +1572,13 @@
           ]
         },
         {
+          "type": "bookmark",
+          "url": "https://ensys.uz/ru",
+          "title": "EnSys — Enterprise System Technologies",
+          "desc": "The live website — in Uzbek, Russian and English.",
+          "image": "assets/uploads/1795425801407-ensys.png"
+        },
+        {
           "type": "h1",
           "text": "Challenges"
         },
