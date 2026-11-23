@@ -915,7 +915,7 @@
           "columns": "2",
           "items": [
             {
-              "image": "assets/uploads/1795327533533-project-union-paper-site.jpg",
+              "image": "assets/uploads/1795424578468-unionpaper-inside.png",
               "title": "Union Paper",
               "desc": "Internal logistics platform: rail import tracking, delivery desk, live map and a driver app.",
               "tags": "Full stack, Backend, Mobile",
@@ -1058,7 +1058,7 @@
       "slug": "projects/union-paper",
       "title": "Union Paper",
       "icon": "📦",
-      "cover": "assets/uploads/1795159915270-project-union-paper-site.jpg",
+      "cover": "assets/uploads/1795424599440-unionpaper-inside.png",
       "description": "Union Paper — an internal logistics platform built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
         {
