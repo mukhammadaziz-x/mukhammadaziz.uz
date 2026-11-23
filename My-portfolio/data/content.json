@@ -929,7 +929,7 @@
               "url": "/projects/ev-charger-bot"
             },
             {
-              "image": "assets/images/project-ensys.svg",
+              "image": "assets/uploads/1795425801407-ensys.png",
               "title": "EnSys Website",
               "desc": "Trilingual corporate website with its own CMS and a Telegram bot for an ERP integration company.",
               "tags": "Full stack, Backend, Frontend",
@@ -1044,7 +1044,7 @@
       "slug": "projects/union-paper",
       "title": "Union Paper",
       "icon": "📦",
-      "cover": "assets/uploads/1795424599440-unionpaper-inside.png",
+      "cover": "",
       "description": "Union Paper — an internal logistics platform built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
         {
