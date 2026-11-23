@@ -177,6 +177,37 @@
     putFile(rel, b64, message, sha, c = session) {
       return gh.api('PUT', rel, { message, content: b64, branch: c.branch, ...(sha ? { sha } : {}) }, c);
     },
+    // Any other repo endpoint (Git Data API: refs, commits, blobs, trees).
+    async git(method, path, body, c = session) {
+      if (!c || !c.token) throw new Error('Not signed in.');
+      const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/${path}`, {
+        method,
+        cache: 'no-store',
+        headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${c.token}`, 'X-GitHub-Api-Version': '2022-11-28', ...(body ? { 'Content-Type': 'application/json' } : {}) },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.status === 401) throw new Error('GitHub rejected the token (expired or revoked). Update it in 👤 Account.');
+      if (!r.ok) throw Object.assign(new Error(`GitHub ${r.status}: ${data.message || r.statusText}`), { status: r.status });
+      return data;
+    },
+    // Big files (videos): the Contents API is unreliable past a few tens of MB, the Git Data API takes blobs up to 100 MB.
+    // blob → tree on top of the branch head → commit → move the branch. Retries if someone else committed meanwhile.
+    async putLargeFile(rel, b64, message, c = session) {
+      const head = `heads/${c.branch.split('/').map(encodeURIComponent).join('/')}`;
+      const blob = await gh.git('POST', 'git/blobs', { content: b64, encoding: 'base64' }, c);
+      for (let attempt = 1; ; attempt++) {
+        const ref = await gh.git('GET', `git/ref/${head}`, null, c);
+        const parent = await gh.git('GET', `git/commits/${ref.object.sha}`, null, c);
+        const tree = await gh.git('POST', 'git/trees', { base_tree: parent.tree.sha, tree: [{ path: gh.repoPath(rel, c), mode: '100644', type: 'blob', sha: blob.sha }] }, c);
+        const commit = await gh.git('POST', 'git/commits', { message, tree: tree.sha, parents: [ref.object.sha] }, c);
+        try {
+          return await gh.git('PATCH', `git/refs/${head}`, { sha: commit.sha, force: false }, c);
+        } catch (e) {
+          if (e.status !== 422 || attempt >= 3) throw e; // 422 = branch moved on; rebuild on the new head
+        }
+      }
+    },
   };
 
   /* ================= gate: login & first-time setup ================= */
@@ -628,7 +659,7 @@
   }
   /* video-poster:end */
 
-  const VIDEO_MAX_MB = 25;
+  const VIDEO_MAX_MB = 90; // GitHub's hard limit is 100 MB per file
   function uploadVideo(path) {
     const input = document.createElement('input');
     input.type = 'file';
@@ -646,7 +677,7 @@
         setStatus('busy', 'Checking the video…');
         const poster = await videoPoster(file);
         setStatus('busy', `Uploading video (${(file.size / 1048576).toFixed(1)} MB)…`);
-        await gh.putFile(rel, b64encodeBytes(new Uint8Array(await file.arrayBuffer())), `Upload ${base}${ext} via Studio`);
+        await gh.putLargeFile(rel, b64encodeBytes(new Uint8Array(await file.arrayBuffer())), `Upload ${base}${ext} via Studio`);
         overrides[rel] = URL.createObjectURL(file);
         setAt(path, rel);
         // Fill the poster next to the video field if it's empty.
