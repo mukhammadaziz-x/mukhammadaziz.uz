@@ -1311,7 +1311,7 @@
     {
       "slug": "projects/ev-charger-bot",
       "title": "EV Charger Bot",
-      "icon": "assets/uploads/1795420010732-mervanevchargerlogo.jpg",
+      "icon": "🔌",
       "cover": "",
       "description": "EV Charger Bot — a Telegram bot that bills an EV charging spot from meter photos, built by Muhammadaziz Xabibullayev in 2026.",
       "blocks": [
