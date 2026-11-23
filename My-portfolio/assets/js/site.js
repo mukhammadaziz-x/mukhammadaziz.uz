@@ -183,7 +183,8 @@
     if (!img) return;
     zoom = document.createElement('div');
     zoom.className = 'zoom';
-    zoom.innerHTML = `<img src="${esc(img.currentSrc || img.src)}" alt="${esc(img.alt)}">`;
+    // src holds the largest version (srcset picks a smaller one for the page itself).
+    zoom.innerHTML = `<img src="${esc(img.src || img.currentSrc)}" alt="${esc(img.alt)}">`;
     zoom.addEventListener('click', closeZoom);
     document.body.appendChild(zoom);
     requestAnimationFrame(() => zoom && zoom.classList.add('on'));

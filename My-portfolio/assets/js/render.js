@@ -100,6 +100,20 @@
   const PDF_TILE = '<span class="pdf-tile" aria-hidden="true"><span class="pdf-tile-ico">📄</span><span class="pdf-tile-label">PDF</span></span>';
   const isImage = (v) => /^(https?:\/\/|blob:|\/|\.\/|assets\/)/i.test(v) || /\.(png|jpe?g|svg|gif|webp|avif|ico)(\?.*)?$/i.test(v);
 
+  /* ================= images ================= */
+  // The site's own raster images go through Netlify Image CDN: resized to the size they are shown at and sent as
+  // AVIF/WebP — a 720 KB screenshot becomes ~7 KB in a card. SVG/GIF, blob: previews and other sites' images are
+  // used as they are. `widths` are the candidates for srcset; the browser picks one from `sizes` and the screen DPR.
+  const cdnable = (u) => /^\/?assets\/[^?#]+\.(png|jpe?g|webp)$/i.test(String(u ?? '').trim());
+  const cdnUrl = (u, w) => `/.netlify/images?url=${encodeURIComponent('/' + String(u).trim().replace(/^\/+/, ''))}&w=${w}`;
+  // `eager` = visible as soon as the page opens: loaded at once with high priority instead of lazily.
+  function imgAttrs(u, widths, sizes, eager = false) {
+    const load = eager ? ' fetchpriority="high"' : ' loading="lazy"';
+    if (!cdnable(u)) return `src="${src(u)}"${load} decoding="async"`;
+    const set = widths.map((w) => `${esc(cdnUrl(u, w))} ${w}w`).join(', ');
+    return `src="${esc(cdnUrl(u, widths[widths.length - 1]))}" srcset="${set}" sizes="${esc(sizes)}"${load} decoding="async"`;
+  }
+
   // Icon value can be: an emoji/text, "si:<simple-icons slug>", or an image path/URL.
   function icon(v, cls = '') {
     v = String(v ?? '').trim();
@@ -109,7 +123,10 @@
       const mono = MONO.has(slug.split('/')[0]) ? ' ico-mono' : '';
       return `<img class="ico ${cls}${mono}" src="https://cdn.simpleicons.org/${slug}" alt="" loading="lazy">`;
     }
-    if (isImage(v)) return `<img class="ico ${cls}" src="${src(v)}" alt="" loading="lazy">`;
+    if (isImage(v)) {
+      const big = /page-ico/.test(cls); // the page's own icon, shown large at the top
+      return `<img class="ico ${cls}" ${big ? imgAttrs(v, [160, 320], '140px', true) : imgAttrs(v, [48, 96], '24px')} alt="">`;
+    }
     return `<span class="ico ${cls} ico-emoji">${esc(v)}</span>`;
   }
 
@@ -168,7 +185,7 @@
       b.src && isPdf(b.src)
         ? `<a class="b-pdf spot" ${linkAttrs(b.src)}>${PDF_TILE}<span>${inline(b.caption || 'Open PDF')}</span></a>`
         : b.src
-        ? `<figure class="b-image w-${esc(b.width || 'full')}"><img src="${src(b.src)}" alt="${esc(b.caption)}" loading="lazy" data-zoom>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
+        ? `<figure class="b-image w-${esc(b.width || 'full')}"><img ${imgAttrs(b.src, [640, 1280, 1920], '(max-width: 800px) 100vw, 760px')} alt="${esc(b.caption)}" data-zoom>${b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : ''}</figure>`
         : '',
     video: (b) => {
       const cap = b.caption ? `<figcaption>${inline(b.caption)}</figcaption>` : '';
@@ -177,7 +194,7 @@
         return `<figure class="b-video b-embed w-${esc(b.width || 'full')}${embed.vertical ? ' vertical' : ''}"><div class="embed-box"><iframe src="${esc(embed.url)}" title="${esc(b.caption || 'Video')}" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>${cap}</figure>`;
       }
       return b.src
-        ? `<figure class="b-video w-${esc(b.width || 'full')}"><video src="${src(b.src)}"${b.poster ? ` poster="${src(b.poster)}"` : ''} controls playsinline preload="metadata"></video>${cap}</figure>`
+        ? `<figure class="b-video w-${esc(b.width || 'full')}"><video src="${src(b.src)}"${b.poster ? ` poster="${cdnable(b.poster) ? esc(cdnUrl(b.poster, 960)) : src(b.poster)}"` : ''} controls playsinline preload="metadata"></video>${cap}</figure>`
         : '';
     },
     bookmark: (b) => {
@@ -186,7 +203,7 @@
       return `<a class="b-bookmark spot" ${linkAttrs(b.url)}>
         <span class="bm-body"><span class="bm-title">${esc(b.title || host || b.url)}</span>${b.desc ? `<span class="bm-desc">${esc(b.desc)}</span>` : ''}
         <span class="bm-url">${host ? `<img src="https://www.google.com/s2/favicons?domain=${esc(host)}&amp;sz=32" alt="" loading="lazy">` : ''}<span>${esc(b.url)}</span></span></span>
-        ${b.image ? `<span class="bm-img"><img src="${src(b.image)}" alt="" loading="lazy"></span>` : ''}</a>`;
+        ${b.image ? `<span class="bm-img"><img ${imgAttrs(b.image, [320, 640], '240px')} alt=""></span>` : ''}</a>`;
     },
     button: (b) => `<div class="b-button"><a class="btn spot" ${linkAttrs(b.url)}>${icon(b.icon, 'btn-ico')}<span>${inline(b.label)}</span></a></div>`,
 
@@ -217,14 +234,17 @@
         .join('')}</div>`,
     gallery: (b) =>
       `<div class="b-gallery cols-${esc(b.columns || 2)}">${visible(b.items)
-        .map((i) => {
+        .map((i, n) => {
           const tags = splitTags(i.tags);
           const pdf = isPdf(i.image);
+          const cols = Number(b.columns) || 2;
+          // The first row is usually on screen when the page opens: load it at once.
+          const cover = imgAttrs(i.image, [400, 800, 1200], `(max-width: 700px) 100vw, ${Math.ceil(760 / cols)}px`, n < cols);
           return wrap(
             'div',
             i.url || (pdf ? i.image : ''),
             'gallery-card spot',
-            `<span class="gallery-cover">${pdf ? PDF_TILE : i.image ? `<img src="${src(i.image)}" alt="" loading="lazy">` : ''}</span><span class="gallery-body"><span class="gallery-title">${inline(i.title)}${draftMark(i.url)}</span>${i.desc ? `<span class="gallery-desc">${inline(i.desc)}</span>` : ''}${tags.length ? `<span class="gallery-tags">${tags.map((t) => `<span class="pill c-${hashColor(t)}">${esc(t)}</span>`).join('')}</span>` : ''}</span>`
+            `<span class="gallery-cover">${pdf ? PDF_TILE : i.image ? `<img ${cover} alt="">` : ''}</span><span class="gallery-body"><span class="gallery-title">${inline(i.title)}${draftMark(i.url)}</span>${i.desc ? `<span class="gallery-desc">${inline(i.desc)}</span>` : ''}${tags.length ? `<span class="gallery-tags">${tags.map((t) => `<span class="pill c-${hashColor(t)}">${esc(t)}</span>`).join('')}</span>` : ''}</span>`
           );
         })
         .join('')}</div>`,
@@ -339,7 +359,7 @@
     const cover = coverHidden
       ? ''
       : covers.length
-        ? covers.map((c) => `<img src="${src(c)}" alt="">`).join('')
+        ? covers.map((c) => `<img ${imgAttrs(c, [960, 1600, 2400], covers.length > 1 ? `${Math.ceil(100 / Math.min(covers.length, 3))}vw` : '100vw', true)} alt="">`).join('')
         : '<span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>';
 
     // Breadcrumbs follow the URL: /python/decorators → Home / Python / Decorators.

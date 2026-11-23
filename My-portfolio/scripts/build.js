@@ -69,6 +69,18 @@ for (const name of fs.readdirSync(ROOT)) {
   fs.cpSync(path.join(ROOT, name), path.join(OUT, name), { recursive: true });
 }
 
+// CSS/JS links get ?v=<content hash>, so browsers may cache them for a year: a changed file gets a new URL on deploy.
+const crypto = require('crypto');
+const hashes = new Map();
+const versionAssets = (html) =>
+  html.replace(/(["'])(\/assets\/(?:css|js)\/[\w.-]+\.(?:css|js))\1/g, (m, q, url) => {
+    if (!hashes.has(url)) {
+      const file = path.join(ROOT, url);
+      hashes.set(url, fs.existsSync(file) ? crypto.createHash('sha1').update(fs.readFileSync(file)).digest('hex').slice(0, 10) : '');
+    }
+    return hashes.get(url) ? `${q}${url}?v=${hashes.get(url)}${q}` : m;
+  });
+
 const write = (rel, data) => {
   const file = path.join(OUT, rel);
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -118,7 +130,7 @@ function renderHtml(slug) {
   set(/<footer id="footer" class="footer"><\/footer>/, () => `<footer id="footer" class="footer"${v.footer ? '' : ' hidden'}>${v.footer}</footer>`);
   set(/<script src="\/assets\/js\/render\.js"><\/script>/, () =>
     `<script id="nz-data" type="application/json">${embedded}</script>\n  <script src="/assets/js/render.js"></script>`);
-  return h;
+  return versionAssets(h);
 }
 
 for (const p of pages) write(p.slug ? `p/${p.slug}.html` : 'index.html', renderHtml(p.slug || ''));
@@ -126,9 +138,20 @@ write('404.html', renderHtml('__not-found__'));
 
 /* ---------- admin (secret URL) ---------- */
 const rules = [];
-const headers = ['/data/*', '  Cache-Control: public, max-age=0, must-revalidate', ''];
+const YEAR = '  Cache-Control: public, max-age=31536000, immutable';
+const DAY = '  Cache-Control: public, max-age=86400, stale-while-revalidate=604800';
+const headers = [
+  '/data/*', '  Cache-Control: public, max-age=0, must-revalidate', '',
+  // Versioned by ?v=hash (see versionAssets) and uploads have unique, timestamped names: never change in place.
+  '/assets/css/*', YEAR, '',
+  '/assets/js/*', YEAR, '',
+  '/assets/uploads/*', YEAR, '',
+  // Fixed names that are rarely replaced: a day fresh, then served at once while revalidating in the background.
+  '/assets/images/*', DAY, '',
+  '/assets/videos/*', DAY, '',
+];
 if (adminPath) {
-  write(`p/${adminPath}.html`, fs.readFileSync(path.join(ROOT, 'admin.html')));
+  write(`p/${adminPath}.html`, versionAssets(fs.readFileSync(path.join(ROOT, 'admin.html'), 'utf8')));
   rules.push(`/${adminPath}  /p/${adminPath}.html  200`);
   headers.push(`/${adminPath}`, '  X-Robots-Tag: noindex, nofollow', '  X-Frame-Options: SAMEORIGIN', '  Cache-Control: no-store', '');
 } else {

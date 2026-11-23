@@ -97,6 +97,8 @@
   let vault = null; // contents of data/auth.json
   let content = null;
   let baseSha = null;
+  let baseContent = null; // content.json as loaded / last published — the common base for merging
+
   let dirty = false;
   let view = 'page:';
   const collapsed = new Set();
@@ -173,6 +175,15 @@
     async getJson(rel, c) {
       const d = await gh.api('GET', rel, null, c);
       return d ? { sha: d.sha, json: JSON.parse(b64decode(d.content)) } : null;
+    },
+    // An older version of a file by its blob sha (the base a saved draft was made from).
+    async blobJson(sha, c = session) {
+      const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(c.owner)}/${encodeURIComponent(c.repo)}/git/blobs/${encodeURIComponent(sha)}`, {
+        cache: 'force-cache',
+        headers: { Accept: 'application/vnd.github+json', Authorization: `Bearer ${c.token}`, 'X-GitHub-Api-Version': '2022-11-28' },
+      });
+      if (!r.ok) throw new Error(`GitHub ${r.status}`);
+      return JSON.parse(b64decode((await r.json()).content));
     },
     putFile(rel, b64, message, sha, c = session) {
       return gh.api('PUT', rel, { message, content: b64, branch: c.branch, ...(sha ? { sha } : {}) }, c);
@@ -285,6 +296,125 @@
     if (session && (!s || Date.now() - s.active > IDLE_LIMIT)) logout();
   }, 60 * 1000);
 
+  /* merge3:start */
+  // Three-way merge of content.json: base = the version this editor loaded, ours = the editor's version,
+  // theirs = what GitHub holds now (e.g. a commit pushed from a computer meanwhile). Changes from both sides are
+  // combined; when both changed the same value differently, ours wins and the path is listed in `conflicts`.
+  // Arrays: elements with a unique identity (page slug, card url/title, badge label…) are matched by it;
+  // other arrays (blocks) are aligned with an LCS diff, like `git merge` does for lines.
+  function merge3(base, ours, theirs) {
+    const conflicts = [];
+    const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+    const canon = (v) =>
+      JSON.stringify(v, (k, x) => (isObj(x) ? Object.keys(x).sort().reduce((o, key) => ((o[key] = x[key]), o), {}) : x));
+    const eq = (a, b) => canon(a) === canon(b);
+    const ID_KEYS = ['slug', 'url', 'title', 'label', 'name', 'src', 'image'];
+    const idKey = (arrays) =>
+      ID_KEYS.find((k) => arrays.every((a) => a.every((x) => isObj(x) && typeof x[k] === 'string') && new Set(a.map((x) => x[k])).size === a.length)) || null;
+
+    function merge(b, o, t, path) {
+      if (eq(o, t)) return o;
+      if (eq(b, o)) return t;
+      if (eq(b, t)) return o;
+      if (isObj(o) && isObj(t)) {
+        const bb = isObj(b) ? b : {};
+        const out = {};
+        for (const k of new Set([...Object.keys(o), ...Object.keys(t)])) {
+          const v = merge(bb[k], o[k], t[k], `${path}.${k}`);
+          if (v !== undefined) out[k] = v;
+        }
+        return out;
+      }
+      if (Array.isArray(o) && Array.isArray(t)) {
+        const bb = Array.isArray(b) ? b : [];
+        const key = idKey([bb, o, t]);
+        return key ? mergeById(bb, o, t, key, path) : mergeSequence(bb, o, t, path);
+      }
+      conflicts.push(path || '/');
+      return o;
+    }
+
+    function mergeById(b, o, t, key, path) {
+      const by = (a) => new Map(a.map((x) => [x[key], x]));
+      const B = by(b);
+      const O = by(o);
+      const T = by(t);
+      const merged = new Map();
+      for (const id of new Set([...O.keys(), ...T.keys(), ...B.keys()])) {
+        const v = merge(B.get(id), O.get(id), T.get(id), `${path}[${key}=${id}]`);
+        if (v !== undefined) merged.set(id, v);
+      }
+      // Our order; an element only theirs has goes right after its predecessor in their order.
+      const order = o.map((x) => x[key]).filter((id) => merged.has(id));
+      t.forEach((x, i) => {
+        if (!merged.has(x[key]) || order.includes(x[key])) return;
+        let at = 0;
+        for (let j = i - 1; j >= 0; j--) {
+          const p = order.indexOf(t[j][key]);
+          if (p >= 0) { at = p + 1; break; }
+        }
+        order.splice(at, 0, x[key]);
+      });
+      return order.map((id) => merged.get(id));
+    }
+
+    // For each base index: the index of the same element in `side` (LCS), or -1 when the side removed/changed it.
+    function align(b, side) {
+      const B = b.map(canon);
+      const S = side.map(canon);
+      const L = Array.from({ length: B.length + 1 }, () => new Array(S.length + 1).fill(0));
+      for (let i = B.length - 1; i >= 0; i--) for (let j = S.length - 1; j >= 0; j--) L[i][j] = B[i] === S[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+      const map = new Array(B.length).fill(-1);
+      for (let i = 0, j = 0; i < B.length && j < S.length; ) {
+        if (B[i] === S[j]) map[i++] = j++;
+        else if (L[i + 1][j] >= L[i][j + 1]) i++;
+        else j++;
+      }
+      return map;
+    }
+    // Elements a side inserted, grouped by the gap they sit in (gap i = right before base[i]).
+    function gaps(b, side, map) {
+      const g = Array.from({ length: b.length + 1 }, () => []);
+      const matched = new Map(map.map((s, i) => [s, i]).filter(([s]) => s >= 0));
+      let gap = 0;
+      side.forEach((x, s) => (matched.has(s) ? (gap = matched.get(s) + 1) : g[gap].push(x)));
+      return g;
+    }
+    function mergeSequence(b, o, t, path) {
+      const mo = align(b, o);
+      const mt = align(b, t);
+      const go = gaps(b, o, mo);
+      const gt = gaps(b, t, mt);
+      const out = [];
+      for (let i = 0; i <= b.length; i++) {
+        const keptO = i < b.length && mo[i] >= 0;
+        const keptT = i < b.length && mt[i] >= 0;
+        if (i < b.length && !keptO && !keptT && go[i].length === 1 && gt[i].length === 1) {
+          out.push(merge(b[i], go[i][0], gt[i][0], `${path}[${i}]`)); // both sides edited this element
+          continue;
+        }
+        out.push(...go[i]);
+        for (const x of gt[i]) if (!go[i].some((y) => eq(x, y))) out.push(x);
+        if (keptO && keptT) out.push(b[i]); // removed (or edited) by either side → not kept
+      }
+      return out;
+    }
+
+    return { result: merge(base, ours, theirs, ''), conflicts };
+  }
+  /* merge3:end */
+
+  const clone = (v) => JSON.parse(JSON.stringify(v));
+  // Combines this editor's changes with what GitHub holds now; returns a toast-ready note.
+  function mergeRemote(remoteJson) {
+    const { result, conflicts } = merge3(baseContent || {}, clone(content), remoteJson);
+    content = normalize(result);
+    baseContent = clone(remoteJson);
+    return conflicts.length
+      ? `Merged with newer changes from GitHub; ${conflicts.length} place(s) were changed on both sides — your version was kept.`
+      : 'Merged with newer changes from GitHub — nothing was lost.';
+  }
+
   /* ================= studio boot ================= */
   async function enterStudio() {
     $('#gate').hidden = true;
@@ -300,6 +430,7 @@
     if (remote) {
       content = normalize(remote.json);
       baseSha = remote.sha;
+      baseContent = clone(content);
     } else {
       // Fallback: the published copy (drafts are not included in it).
       content = normalize(await fetch('/data/content.json', { cache: 'no-cache' }).then((r) => r.json()).catch(() => ({})));
@@ -307,12 +438,29 @@
     }
     const draft = store.get(DRAFT_KEY);
     if (draft && draft.content) {
-      const same = draft.baseSha && draft.baseSha === baseSha;
-      if (same || confirm(`You have unpublished local changes from ${new Date(draft.savedAt).toLocaleString()}, but the site changed since then. Restore your local changes anyway?`)) {
+      if (draft.baseSha && draft.baseSha === baseSha) {
         content = normalize(draft.content);
         dirty = true;
         toast('Restored your unpublished changes.', 'info', true);
-      } else store.del(DRAFT_KEY);
+      } else {
+        // The site changed since the draft was saved (a publish elsewhere, or a push from a computer):
+        // combine both instead of making the owner choose which one to lose.
+        const draftBase = draft.base || (draft.baseSha && remote ? await gh.blobJson(draft.baseSha).catch(() => null) : null);
+        if (draftBase && remote) {
+          const { result, conflicts } = merge3(draftBase, draft.content, remote.json);
+          content = normalize(result);
+          dirty = true;
+          toast(
+            `Restored your unpublished changes and combined them with newer changes from GitHub${conflicts.length ? ` (${conflicts.length} place(s) changed on both sides — yours kept)` : ''}.`,
+            'info',
+            true
+          );
+        } else if (confirm(`You have unpublished local changes from ${new Date(draft.savedAt).toLocaleString()}, but the site changed since then. Restore your local changes anyway?`)) {
+          content = normalize(draft.content);
+          dirty = true;
+          toast('Restored your unpublished changes.', 'info', true);
+        } else store.del(DRAFT_KEY);
+      }
     }
     setStatus(dirty ? 'dirty' : 'ok', dirty ? 'Unpublished changes' : 'Up to date');
     renderEditor();
@@ -529,7 +677,7 @@
     dirty = true;
     setStatus('dirty', 'Unpublished changes');
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => store.set(DRAFT_KEY, { content, baseSha, savedAt: Date.now() }), 300);
+    saveTimer = setTimeout(() => store.set(DRAFT_KEY, { content, baseSha, base: baseContent, savedAt: Date.now() }), 300);
     if (structural) renderEditor();
     pushPreview();
   }
@@ -559,18 +707,33 @@
     publishing = true;
     setStatus('busy', 'Publishing…');
     try {
-      const remote = await gh.api('GET', 'data/content.json');
-      const remoteSha = remote ? remote.sha : undefined;
-      if (baseSha && remoteSha && remoteSha !== baseSha && !confirm('content.json was changed on GitHub since you loaded it. Overwrite it with your version?')) {
-        setStatus('dirty', 'Unpublished changes');
-        return;
+      let note = '';
+      for (let attempt = 1; ; attempt++) {
+        const remote = await gh.getJson('data/content.json');
+        if (remote && baseSha && remote.sha !== baseSha) {
+          // GitHub changed since this editor loaded (e.g. a push from a computer): merge, never overwrite.
+          note = mergeRemote(remote.json);
+          baseSha = remote.sha;
+          renderEditor();
+          pushPreview();
+          const issue = validate();
+          if (issue) throw new Error(`${note} ${issue}`);
+        }
+        try {
+          const res = await gh.putFile('data/content.json', b64encode(JSON.stringify(content, null, 2) + '\n'), 'Update site content via Studio', remote ? remote.sha : undefined);
+          baseSha = res.content.sha;
+          baseContent = clone(content);
+          break;
+        } catch (e) {
+          // 409: someone committed between our read and write — read again and merge again.
+          if (attempt < 3 && /GitHub 409/.test(e.message)) continue;
+          throw e;
+        }
       }
-      const res = await gh.putFile('data/content.json', b64encode(JSON.stringify(content, null, 2) + '\n'), 'Update site content via Studio', remoteSha);
-      baseSha = res.content.sha;
       dirty = false;
       store.del(DRAFT_KEY);
       setStatus('ok', 'Published');
-      toast('Published! Netlify will redeploy the site in about a minute.', 'ok');
+      toast(`Published! Netlify will redeploy the site in about a minute.${note ? ' ' + note : ''}`, 'ok');
     } catch (e) {
       setStatus('dirty', 'Unpublished changes');
       toast(e.message, 'err');
